@@ -6,23 +6,24 @@
 <meta name="theme-color" content="#0E1411">
 <title>Vexo Coach</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0E1411;--card:#18221D;--line:#22302A;--line2:#3A4A43;--lime:#D7F25C;--green:#5BD68A;--amber:#F5B43C;--blue:#5CA8FF;--red:#FF8A8A;--t1:#FFFFFF;--t2:#D2DCD6;--t3:#B9C7C0;--t4:#8FA399}
+:root{--bg:#0A0E0C;--card:rgba(255,255,255,0.16);--glassb:rgba(255,255,255,0.26);--line:rgba(255,255,255,0.2);--line2:rgba(255,255,255,0.4);--lime:#D7F25C;--green:#5BD68A;--amber:#F5B43C;--blue:#5CA8FF;--red:#FF8A8A;--t1:#FFFFFF;--t2:#E1E6F7;--t3:#DCE2FF;--t4:#C9D0F0}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:#070a08}
-body{color:var(--t1);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+html,body{margin:0;height:100%;background:#1c2149}
+body{color:var(--t1);font-family:Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--lime)}
-button{font-family:Inter,sans-serif}
-.app{max-width:430px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
+button{font-family:Outfit,sans-serif}
+.app{max-width:430px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:radial-gradient(90% 45% at 0% 0%, #1F9C7E 0%, rgba(31,156,126,0) 70%), radial-gradient(90% 50% at 100% 40%, #7A5CF0 0%, rgba(122,92,240,0) 70%), radial-gradient(80% 35% at 0% 100%, rgba(215,242,92,0.22) 0%, rgba(215,242,92,0) 70%), linear-gradient(180deg, #3550C8 0%, #4B3FB0 60%, #23707E 100%)}
 main{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
 main::-webkit-scrollbar{display:none}
 .screen{display:flex;flex-direction:column;gap:16px;padding:56px 20px 20px}
 .screen.tight{gap:14px;padding-top:52px}
-.h{font-family:'Space Grotesk',Inter,sans-serif;font-weight:700;margin:0}
-h1.h{font-size:26px}
+.h{font-family:Outfit,sans-serif;font-weight:700;letter-spacing:-0.01em;margin:0}
+h1.h{font-size:32px!important;font-weight:600;letter-spacing:-0.02em}
 .sub{font-size:13px;color:var(--t3)}
-.card{background:var(--card);border-radius:16px}
+.glass,.card,.dev,.item,.prow{background:var(--card);border:1px solid var(--glassb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glassb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.card{border-radius:26px}
 .label{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
 .row{display:flex;align-items:center}
 .col{display:flex;flex-direction:column}
@@ -31,25 +32,25 @@ h1.h{font-size:26px}
 .live-tag{display:inline-block;padding:2px 6px;border-radius:5px;background:rgba(91,214,138,.18);color:var(--green);font-size:10px;font-weight:700;letter-spacing:.08em;margin-left:6px;vertical-align:middle}
 .pill{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:13px;font-weight:600}
 .dot{width:8px;height:8px;border-radius:4px;flex-shrink:0}
-nav.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:10px 12px 28px;border-top:1px solid var(--line);background:var(--bg);flex-shrink:0}
-nav.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:var(--t3);text-decoration:none;font-size:12px}
-nav.tabs a.on{color:var(--lime);font-weight:600}
-.dev{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:12px;background:var(--card)}
+nav.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0 16px 26px;padding:8px;border-radius:999px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.16);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);flex-shrink:0}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;border-radius:999px;color:var(--t2);text-decoration:none;font-size:12px}
+nav.tabs a.on{color:#0A0E0C;background:var(--lime);font-weight:600}
+.dev{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:22px}
 .dev b{font-size:13px;font-weight:600}
 .dev span{font-size:12px}
-.cue{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;border:2px solid}
+.cue{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:28px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:2px solid}
 .cue .tag{white-space:nowrap;padding:4px 8px;border-radius:6px;color:var(--bg);font-size:12px;font-weight:700;letter-spacing:.08em}
-.cue .big{font-family:'Space Grotesk',Inter,sans-serif;font-size:26px;font-weight:700;line-height:1.15}
+.cue .big{font-family:Outfit,sans-serif;font-size:26px;font-weight:700;line-height:1.15}
 .cue.pop{animation:pop .5s ease-out}
 @keyframes pop{0%{transform:scale(.96);box-shadow:0 0 0 0 var(--glow)}60%{transform:scale(1.01);box-shadow:0 0 0 10px transparent}100%{transform:scale(1)}}
-.item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--card)}
+.item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:22px}
 .item.fresh{animation:slide .35s ease-out}
 @keyframes slide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .item .t{font-size:15px;font-weight:600}
 .item .d{font-size:12px;color:var(--t3)}
-.empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:28px 18px;border-radius:16px;border:2px dashed var(--line2);text-align:center}
-.stat{display:flex;flex-direction:column;gap:2px;padding:12px;border-radius:12px;background:#121A16}
-.stat .v{font-family:'Space Grotesk',Inter,sans-serif;font-size:22px;font-weight:700}
+.empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:28px 18px;border-radius:26px;background:rgba(255,255,255,0.08);border:2px dashed var(--line2);text-align:center}
+.stat{display:flex;flex-direction:column;gap:2px;padding:12px;border-radius:18px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18)}
+.stat .v{font-family:Outfit,sans-serif;font-size:22px;font-weight:700}
 .stat .k{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--t3)}
 .timeline{display:flex;flex-wrap:wrap;gap:5px}
 .timeline i{width:12px;height:12px;border-radius:6px;display:block}
@@ -60,11 +61,11 @@ nav.tabs a.on{color:var(--lime);font-weight:600}
 .trow:last-child{border-bottom:0}
 .trow span+span{text-align:right;font-weight:600}
 .av{width:36px;height:36px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
-.prow{display:grid;grid-template-columns:36px 1fr 52px 52px;gap:8px;align-items:center;min-height:44px;padding:8px 14px;border-radius:14px;background:var(--card);color:#fff;text-decoration:none}
-.num{font-family:'Space Grotesk',Inter,sans-serif;font-size:16px;font-weight:700;text-align:right}
+.prow{display:grid;grid-template-columns:36px 1fr 52px 52px;gap:8px;align-items:center;min-height:44px;padding:8px 14px;border-radius:26px;color:#fff;text-decoration:none}
+.num{font-family:Outfit,sans-serif;font-size:16px;font-weight:700;text-align:right}
 .kv{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
 .kv:last-child{border-bottom:0}
-.btn{min-height:44px;padding:0 14px;border:0;border-radius:10px;font:600 14px Inter,sans-serif;cursor:pointer}
+.btn{min-height:44px;padding:0 14px;border:0;border-radius:10px;font:600 14px Outfit,sans-serif;cursor:pointer}
 .spider{position:relative;width:322px;align-self:center}
 .spider svg{position:absolute;inset:0}
 .spider span{position:absolute;font-size:11px;color:var(--t2);white-space:nowrap}
@@ -214,19 +215,19 @@ function screenMe() {
   return `<div class="screen tight">
     <div class="row" style="gap:12px">
       <span class="h" style="width:44px;height:44px;border-radius:22px;background:var(--lime);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px">Y</span>
-      <div class="col" style="gap:2px"><h1 class="h" style="font-size:24px">Your game</h1><span class="sub">12 tracked matches · right-handed</span></div>
+      <div class="col" style="gap:2px"><h1 class="h" >Your game</h1><span class="sub">12 tracked matches · right-handed</span></div>
     </div>
     <div class="card col" style="gap:12px;padding:14px;border:1px solid var(--line2)">
       <div class="row between"><span class="label" style="color:var(--t1)">This session<span class="live-tag">LIVE</span></span><span class="sub">${state.status ? esc(state.status.band) : 'band'}</span></div>
       ${session}
     </div>
     <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
-      <div class="card col" style="gap:4px;padding:14px;border-radius:14px">
+      <div class="card col" style="gap:4px;padding:14px;border-radius:26px">
         <span style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--t3)">DUPR · DOUBLES<span class="sample">SAMPLE</span></span>
         <span class="h" style="font-size:32px">3.42</span>
         <span style="font-size:12px;color:var(--t3)">From match results · linked</span>
       </div>
-      <div class="col" style="gap:4px;padding:14px;border-radius:14px;background:rgba(215,242,92,0.10);border:2px solid var(--lime)">
+      <div class="col" style="gap:4px;padding:14px;border-radius:26px;background:rgba(215,242,92,0.10);border:2px solid var(--lime)">
         <span style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--lime)">VEXO RATING<span class="sample">SAMPLE</span></span>
         <span class="h" style="font-size:32px">3.61</span>
         <span style="font-size:12px;color:var(--green)">▲ 0.18 this month</span>
@@ -237,7 +238,7 @@ function screenMe() {
       <div class="row between" style="align-items:baseline"><span class="label">Shot skills · 0–100<span class="sample">SAMPLE</span></span><span style="font-size:12px;color:var(--t3)">vs last month</span></div>
       ${groups}
     </div>
-    <div class="row" style="gap:12px;padding:12px 14px;border-radius:14px;background:rgba(245,180,60,0.12)">
+    <div class="row" style="gap:12px;padding:12px 14px;border-radius:26px;background:rgba(245,180,60,0.12)">
       <div class="col" style="flex:1;gap:2px"><span style="font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--amber)">WORK ON NEXT</span><span style="font-size:14px">Resets and third-shot drops</span></div>
       <button class="btn" type="button" style="background:var(--amber);color:var(--bg)">Drill plan</button>
     </div>
@@ -257,16 +258,16 @@ function spider(axes, you, them, cx, cy, R, w, h, youFirst) {
     return `<span style="left:${(cx + (R + 10) * c).toFixed(0)}px;top:${(cy + (R + 12) * s).toFixed(0)}px;transform:translate(${tx},-50%)">${name}</span>`;
   }).join('');
   const youP = `<polygon points="${poly(you)}" fill="rgba(215,242,92,${youFirst ? 0.18 : 0.22})" stroke="#D7F25C" stroke-width="2"/>`;
-  const themP = `<polygon points="${poly(them)}" fill="rgba(92,168,255,0.22)" stroke="#5CA8FF" stroke-width="2"/>`;
+  const themP = `<polygon points="${poly(them)}" fill="rgba(255,143,200,0.28)" stroke="#FF8FC8" stroke-width="2"/>`;
   return `<div class="spider" style="height:${h}px"><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="Spider chart comparing shot skills">
-    <polygon points="${ring(25)}" fill="none" stroke="#22302A"/><polygon points="${ring(50)}" fill="none" stroke="#22302A"/>
-    <polygon points="${ring(75)}" fill="none" stroke="#22302A"/><polygon points="${ring(100)}" fill="none" stroke="#3A4A43"/>
-    <path d="${spokes}" stroke="#22302A" fill="none"/>${youFirst ? youP + themP : themP + youP}</svg>${labels}</div>`;
+    <polygon points="${ring(25)}" fill="none" stroke="rgba(255,255,255,0.2)"/><polygon points="${ring(50)}" fill="none" stroke="rgba(255,255,255,0.2)"/>
+    <polygon points="${ring(75)}" fill="none" stroke="rgba(255,255,255,0.2)"/><polygon points="${ring(100)}" fill="none" stroke="rgba(255,255,255,0.4)"/>
+    <path d="${spokes}" stroke="rgba(255,255,255,0.2)" fill="none"/>${youFirst ? youP + themP : themP + youP}</svg>${labels}</div>`;
 }
 
 const legend = name => `<div class="row" style="gap:12px;font-size:12px">
   <span class="row" style="gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:var(--lime)"></span>You</span>
-  <span class="row" style="gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:var(--blue)"></span>${name}</span></div>`;
+  <span class="row" style="gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#FF8FC8"></span>${name}</span></div>`;
 
 const PLAYERS = [
   { name: 'Maya', initial: 'M', bg: '#5A4A7A', dupr: '3.91', vexo: '4.02', note: 'Best at: dinks · Weakest: lob', href: '#players', up: true },
@@ -283,7 +284,8 @@ function screenPlayers() {
     <span class="col" style="gap:2px;min-width:0"><span style="font-size:15px;font-weight:600">${p.name}</span><span style="font-size:12px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.note}</span></span>
     <span class="num">${p.dupr}</span><span class="num" style="color:${p.up ? COLOR.green : '#FF8A8A'}">${p.vexo}</span></a>`).join('');
   return `<div class="screen tight">
-    <div class="col" style="gap:2px"><span class="sub">People you've played<span class="sample">SAMPLE</span></span><h1 class="h" style="font-size:24px">Players</h1></div>
+    <div class="col" style="gap:2px"><span class="sub">People you've played<span class="sample">SAMPLE</span></span><h1 class="h" >Players</h1></div>
+    <div class="row" style="gap:14px;overflow:hidden;align-items:flex-start"><button type="button" aria-label="Add a player" class="col" style="align-items:center;gap:6px;padding:0;border:0;background:none;color:#fff;font:400 13px Outfit,sans-serif;cursor:pointer"><span style="width:64px;height:64px;border-radius:32px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Add</button><a href="#profile/sean" class="col" style="align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:13px"><span style="width:64px;height:64px;border-radius:32px;padding:3px;box-sizing:border-box;background:conic-gradient(#D7F25C, #FF8FC8, #9B7BFF, #D7F25C)"><span style="width:100%;height:100%;border-radius:50%;border:3px solid #3550C8;box-sizing:border-box;background:#2F6B57;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600">S</span></span>Sean</a><a href="#players" class="col" style="align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:13px"><span style="width:64px;height:64px;border-radius:32px;padding:3px;box-sizing:border-box;background:conic-gradient(#D7F25C, #FF8FC8, #9B7BFF, #D7F25C)"><span style="width:100%;height:100%;border-radius:50%;border:3px solid #3550C8;box-sizing:border-box;background:#5A4A7A;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600">M</span></span>Maya</a><a href="#players" class="col" style="align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:13px"><span style="width:64px;height:64px;border-radius:32px;padding:3px;box-sizing:border-box;background:conic-gradient(#D7F25C, #FF8FC8, #9B7BFF, #D7F25C)"><span style="width:100%;height:100%;border-radius:50%;border:3px solid #3550C8;box-sizing:border-box;background:#7A5A2A;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600">P</span></span>Partner</a><a href="#players" class="col" style="align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:13px"><span style="width:64px;height:64px;border-radius:32px;padding:3px;box-sizing:border-box;background:conic-gradient(#D7F25C, #FF8FC8, #9B7BFF, #D7F25C)"><span style="width:100%;height:100%;border-radius:50%;border:3px solid #3550C8;box-sizing:border-box;background:#3A5A8A;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600">J</span></span>Jules</a></div>
     <div class="card col" style="gap:10px;padding:14px">
       <div class="row between"><span style="font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--t3)">YOU VS SEAN</span>${legend('Sean')}</div>
       ${chart}
@@ -302,14 +304,14 @@ function screenRecap() {
   const youOnTime = s ? s.onTime + '%' : '[%]';
   return `<div class="screen">
     <div class="col" style="gap:2px"><span class="sub">Doubles vs Sean + Maya<span class="sample">SAMPLE</span></span><h1 class="h">Won 11–9</h1></div>
-    <div class="col" style="gap:6px;padding:16px;border-radius:16px;background:rgba(92,168,255,0.12);border:2px solid var(--blue)">
+    <div class="col" style="gap:6px;padding:16px;border-radius:26px;background:rgba(92,168,255,0.12);border:2px solid var(--blue)">
       <span style="font-size:12px;font-weight:700;letter-spacing:.08em;color:#9FB4FF">THE CUE THAT WON IT</span>
       <span class="h" style="font-size:20px">Go at Sean's backhand</span>
       <span style="font-size:14px;color:var(--t2)">Called [N] times · you won [N] of those points</span>
     </div>
     <div class="col" style="gap:8px">
       <span class="label">Team</span>
-      <div class="card col" style="border-radius:14px">
+      <div class="card col" style="border-radius:26px">
         <div class="trow" style="padding:10px 14px;font-size:12px;color:var(--t3)"><span></span><span style="font-weight:400">You</span><span style="font-weight:400">Partner</span></div>
         <div class="trow"><span>Middle balls</span><span>[N]</span><span>[N]</span></div>
         <div class="trow"><span>Errors</span><span>[N]</span><span>[N]</span></div>
@@ -319,11 +321,11 @@ function screenRecap() {
     </div>
     <div class="col" style="gap:8px">
       <span class="label">People you played</span>
-      <a href="#profile/sean" class="row" style="gap:12px;padding:12px 14px;min-height:44px;border-radius:14px;background:var(--card);color:#fff;text-decoration:none">
+      <a href="#profile/sean" class="row" style="gap:12px;padding:12px 14px;min-height:44px;border-radius:26px;background:var(--card);border:1px solid var(--glassb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#fff;text-decoration:none">
         <span class="av" style="background:#2F6B57">S</span>
         <span class="col" style="flex:1;gap:2px"><span style="font-size:15px;font-weight:600">Sean</span><span style="font-size:12px;color:var(--t3)">Profile updated · backhand still weak</span></span>${ICON.chev}
       </a>
-      <div class="row" style="gap:12px;padding:12px 14px;border-radius:14px;background:var(--card)">
+      <div class="row" style="gap:12px;padding:12px 14px;border-radius:26px;background:var(--card);border:1px solid var(--glassb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
         <span class="av" style="background:#5A4A7A">M</span>
         <span class="col" style="flex:1;gap:2px"><span style="font-size:15px;font-weight:600">Maya</span><span style="font-size:12px;color:var(--t3)">New · strong at the kitchen</span></span>
         <button type="button" aria-label="Add a voice note about Maya" style="width:44px;height:44px;border:0;border-radius:22px;background:var(--lime);color:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer">${ICON.mic}</button>
@@ -344,26 +346,34 @@ const OFF_COURT = [
 
 function screenProfile(name) {
   if (name !== 'sean') {
-    return `<div class="screen"><a href="#players" style="display:flex;width:44px;height:44px;border-radius:22px;background:var(--card);align-items:center;justify-content:center;color:#fff">${ICON.back}</a>
+    return `<div class="screen"><a href="#players" style="display:flex;width:44px;height:44px;border-radius:22px;background:var(--card);border:1px solid var(--glassb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center;color:#fff">${ICON.back}</a>
       <h1 class="h">${esc(name.charAt(0).toUpperCase() + name.slice(1))}</h1><span class="sub">No profile yet. Play a match together to build one.</span></div>`;
   }
   const chart = spider(['Serve', 'Forehand', 'Backhand', 'Slice', 'Third-shot drop', 'Reset / dig', 'Volley', 'Dink'],
     [72, 74, 49, 52, 41, 38, 61, 57], [68, 70, 46, 58, 63, 55, 60, 71], 161, 125, 82, 322, 250, true);
-  const tile = (k, v) => `<div class="col" style="gap:2px;padding:12px;border-radius:12px;background:var(--card)"><span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--t3)">${k}</span><span class="h" style="font-size:22px">${v}</span></div>`;
+  const tile = (k, v) => `<div class="col" style="gap:2px;padding:12px;border-radius:22px;background:var(--card);border:1px solid var(--glassb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)"><span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--t3)">${k}</span><span class="h" style="font-size:22px">${v}</span></div>`;
   return `<div>
-    <div style="position:relative;height:320px;background:#2F6B57;overflow:hidden">
-      <svg width="100%" height="320" viewBox="0 0 390 320" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Photo placeholder for Sean" style="position:absolute;inset:0"><circle cx="195" cy="130" r="58" fill="#3E8069"/><path d="M85 320c0-70 50-112 110-112s110 42 110 112z" fill="#3E8069"/></svg>
-      <div style="position:absolute;left:0;right:0;bottom:0;height:120px;background:rgba(14,20,17,0.55)"></div>
-      <a href="#players" aria-label="Back to players" style="position:absolute;left:16px;top:52px;width:44px;height:44px;border-radius:22px;background:rgba(14,20,17,0.6);display:flex;align-items:center;justify-content:center;color:#fff">${ICON.back}</a>
-      <span style="position:absolute;right:16px;top:62px;padding:4px 8px;border-radius:6px;background:rgba(14,20,17,0.6);font-size:11px;color:var(--t2)">[PHOTO] · SAMPLE</span>
-      <div class="row between" style="position:absolute;left:20px;right:20px;bottom:18px;align-items:flex-end">
-        <div class="col" style="gap:4px"><h1 class="h" style="font-size:32px">Sean</h1><span style="font-size:13px;color:var(--t2)">Right-handed · likes the left side</span></div>
-        <span style="padding:4px 8px;border-radius:6px;background:rgba(91,214,138,0.2);color:#8BE3AE;font-size:12px;font-weight:600">Opted in</span>
+    <div style="position:relative;height:470px;overflow:hidden;border-radius:0 0 36px 36px;background:radial-gradient(60% 50% at 50% 40%, rgba(240,232,255,0.55) 0%, rgba(140,120,220,0.35) 45%, rgba(40,60,52,0) 80%), linear-gradient(180deg, #7C7BF2 0%, #2FA383 100%)">
+      <svg width="100%" height="470" viewBox="0 0 390 470" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Photo placeholder for Sean" style="position:absolute;inset:0"><circle cx="180" cy="170" r="66" fill="rgba(255,255,255,0.22)"/><path d="M60 470c0-92 54-150 120-150s120 58 120 150z" fill="rgba(255,255,255,0.22)"/></svg>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:200px;background:linear-gradient(180deg, rgba(10,14,12,0) 0%, rgba(53,80,200,0.95) 100%)"></div>
+      <div class="row between" style="position:absolute;left:16px;right:16px;top:50px">
+        <a href="#players" aria-label="Back to players" style="width:52px;height:52px;border-radius:26px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;color:#fff">${ICON.back}</a>
+        <span style="padding:6px 12px;border-radius:999px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);font-size:12px;color:#fff">[PHOTO] · SAMPLE</span>
+      </div>
+      <div class="col" style="position:absolute;right:14px;top:150px;align-items:center;gap:14px;padding:14px 10px;border-radius:999px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
+        <button type="button" aria-label="Invite Sean to play" style="width:48px;height:48px;border-radius:24px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;background:var(--lime);color:#0A0E0C"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg></button>
+        <button type="button" aria-label="Message Sean" style="width:48px;height:48px;border-radius:24px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></button>
+        <button type="button" aria-label="Add a voice note about Sean" style="width:48px;height:48px;border-radius:24px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer">${ICON.mic}</button>
+      </div>
+      <div class="col" style="position:absolute;left:20px;right:20px;bottom:22px;gap:10px">
+        <div class="row" style="gap:10px"><h1 class="h" style="font-size:36px!important">Sean</h1><span style="padding:4px 10px;border-radius:999px;background:rgba(91,214,138,0.22);color:#A6EDC2;font-size:12px;font-weight:500">Opted in</span></div>
+        <span style="font-size:14px;color:#D8E2DC">Right-handed · likes the left side · new to SF</span>
+        <div class="row" style="gap:8px;flex-wrap:wrap"><span style="padding:8px 14px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);font-size:13px">Climbing</span><span style="padding:8px 14px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);font-size:13px">Dev tools</span><span style="padding:8px 14px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);font-size:13px">Coffee</span></div>
       </div>
     </div>
     <div class="col" style="gap:18px;padding:18px 20px 24px">
       <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">${tile('DUPR', '3.55')}${tile('VEXO', '3.38')}${tile('YOU VS SEAN', '1–2')}</div>
-      <div class="col" style="gap:8px;padding:16px;border-radius:16px;background:rgba(215,242,92,0.10);border:2px solid var(--lime)">
+      <div class="col" style="gap:8px;padding:16px;border-radius:26px;background:rgba(215,242,92,0.10);border:2px solid var(--lime)">
         <span style="font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--lime)">BEFORE TONIGHT'S REMATCH</span>
         <span style="font-size:16px;line-height:1.45">Attack his backhand and lob when he rushes the net. Ask how the climbing trip went.</span>
         <button class="btn" type="button" style="align-self:flex-start;display:flex;align-items:center;gap:8px;background:var(--lime);color:var(--bg)">${ICON.speaker}Play in my glasses</button>
@@ -375,7 +385,7 @@ function screenProfile(name) {
       </div>
       <div class="col" style="gap:8px">
         <span class="label">On the court · from glasses + bands</span>
-        <div class="card col" style="border-radius:14px">
+        <div class="card col" style="border-radius:26px">
           <div class="kv"><span style="font-size:15px">Backhand</span><span style="font-size:14px;color:#9FB4FF;font-weight:600">Weak · attack it</span></div>
           <div class="kv"><span style="font-size:15px">After serving</span><span style="font-size:14px;color:#9FB4FF;font-weight:600">Rushes the net · lob</span></div>
           <div class="kv"><span style="font-size:15px">Serve</span><span style="font-size:14px;color:var(--t2)">Deep, to your backhand</span></div>
@@ -384,20 +394,20 @@ function screenProfile(name) {
       </div>
       <div class="col" style="gap:8px">
         <span class="label">Off the court</span>
-        <div class="card col" style="border-radius:14px">${OFF_COURT.map(([l, v, s], i) => `<div style="display:grid;grid-template-columns:104px 1fr;gap:10px;padding:12px 14px;${i < OFF_COURT.length - 1 ? 'border-bottom:1px solid var(--line)' : ''}"><span style="font-size:13px;color:var(--t3)">${l}</span><span class="col" style="gap:2px"><span style="font-size:14px">${v}</span><span style="font-size:11px;color:var(--t4)">${s}</span></span></div>`).join('')}</div>
-        <div class="row" style="gap:10px;padding:12px 14px;border-radius:14px;background:rgba(245,180,60,0.12)">${ICON.star}<span style="font-size:14px">In common: you both build developer tools</span></div>
+        <div class="card col" style="border-radius:26px">${OFF_COURT.map(([l, v, s], i) => `<div style="display:grid;grid-template-columns:104px 1fr;gap:10px;padding:12px 14px;${i < OFF_COURT.length - 1 ? 'border-bottom:1px solid var(--line)' : ''}"><span style="font-size:13px;color:var(--t3)">${l}</span><span class="col" style="gap:2px"><span style="font-size:14px">${v}</span><span style="font-size:11px;color:var(--t4)">${s}</span></span></div>`).join('')}</div>
+        <div class="row" style="gap:10px;padding:12px 14px;border-radius:26px;background:rgba(245,180,60,0.12)">${ICON.star}<span style="font-size:14px">In common: you both build developer tools</span></div>
       </div>
       <div class="col" style="gap:8px">
         <span class="label">Matches together</span>
-        <div class="card col" style="border-radius:14px">
+        <div class="card col" style="border-radius:26px">
           <div class="kv"><span class="col" style="gap:2px"><span style="font-size:14px">Nov 14 · vs Sean + Maya</span><span style="font-size:12px;color:var(--t3)">Attacked his backhand</span></span><span style="font-weight:700;color:var(--green)">W 11–9</span></div>
           <div class="kv"><span class="col" style="gap:2px"><span style="font-size:14px">Nov 9 · vs Sean + Maya</span><span style="font-size:12px;color:var(--t3)">Lost the kitchen battle</span></span><span style="font-weight:700;color:#FF8A8A">L 7–11</span></div>
           <div class="kv"><span class="col" style="gap:2px"><span style="font-size:14px">Nov 2 · first game</span><span style="font-size:12px;color:var(--t3)">"Good game" and no text back</span></span><span style="font-weight:700;color:#FF8A8A">L 3–11</span></div>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
-        <button type="button" style="min-height:52px;border:0;border-radius:14px;background:var(--lime);color:var(--bg);font:600 15px Inter,sans-serif;cursor:pointer">Invite to play</button>
-        <button type="button" style="display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border:1px solid var(--line2);border-radius:14px;background:var(--card);color:#fff;font:600 15px Inter,sans-serif;cursor:pointer">${ICON.mic.replace(/20/g, '18')}Voice note</button>
+        <button type="button" style="min-height:52px;border:0;border-radius:26px;background:var(--lime);color:var(--bg);font:600 15px Outfit,sans-serif;cursor:pointer">Invite to play</button>
+        <button type="button" style="display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border:1px solid var(--line2);border-radius:26px;background:var(--card);border:1px solid var(--glassb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#fff;font:600 15px Outfit,sans-serif;cursor:pointer">${ICON.mic.replace(/20/g, '18')}Voice note</button>
       </div>
       <span style="font-size:12px;color:var(--t4);line-height:1.4">On-court stats come from matches you played together. Off-court details come from your own notes or what Sean chose to share. Sample data.</span>
     </div>
