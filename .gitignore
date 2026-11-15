@@ -4,6 +4,6 @@ __pycache__/
 .DS_Store
 data/
 demo/work/
-demo/out/
 ui/out/
 node_modules/
+demo/out/*.jpg
