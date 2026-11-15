@@ -1,0 +1,12 @@
+{
+  "clip": "IMG_6432",
+  "src": "~/Documents/Vids/IMG_6432 2.MOV",
+  "start": 3.0,
+  "end": 11.4,
+  "events": [
+    {"t": 4.20, "contact_s": 4.00, "type": "swing", "n": 4, "cue": "short", "color": "#ffb000", "line": "Finish the swing",
+     "swing": {"duration_ms": 330, "peak_gyro": 1046, "peak_accel": 5.6, "impact_jerk": 2.3, "impact_vs_peak_ms": 4, "follow_ms": 98, "samples": 137}},
+    {"t": 7.60, "contact_s": 7.40, "type": "swing", "n": 5, "cue": "good", "color": "#00ff40", "line": "Nice. Same again.",
+     "swing": {"duration_ms": 470, "peak_gyro": 1724, "peak_accel": 8.2, "impact_jerk": 3.4, "impact_vs_peak_ms": -3, "follow_ms": 284, "samples": 196}}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "clip": "IMG_6433",
+  "src": "~/Documents/Vids/IMG_6433 2.MOV",
+  "start": 0.5,
+  "end": 7.4,
+  "events": [
+    {"t": 1.66, "contact_s": 1.46, "type": "swing", "n": 1, "cue": "late", "color": "#ffb000", "line": "Meet it in front",
+     "swing": {"duration_ms": 430, "peak_gyro": 1184, "peak_accel": 6.1, "impact_jerk": 2.1, "impact_vs_peak_ms": 72, "follow_ms": 205, "samples": 179}},
+    {"t": 2.83, "contact_s": 2.63, "type": "swing", "n": 2, "cue": "late", "color": "#ffb000", "line": "Meet it in front",
+     "swing": {"duration_ms": 410, "peak_gyro": 1312, "peak_accel": 6.8, "impact_jerk": 2.4, "impact_vs_peak_ms": 46, "follow_ms": 188, "samples": 171}},
+    {"t": 5.40, "contact_s": 5.20, "type": "swing", "n": 3, "cue": "good", "color": "#00ff40", "line": "Nice. Same again.",
+     "swing": {"duration_ms": 455, "peak_gyro": 1538, "peak_accel": 7.4, "impact_jerk": 3.0, "impact_vs_peak_ms": 6, "follow_ms": 262, "samples": 189}}
+  ]
+}

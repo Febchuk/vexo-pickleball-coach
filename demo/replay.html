@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vexo Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --cue: #ffffff; --ink: #f5f7fa; --dim: rgba(245,247,250,0.7); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #07090d; color: var(--ink); font-family: Geist, system-ui, sans-serif; overflow: hidden; }
+  .glass {
+    background: rgba(20,24,32,0.3);
+    -webkit-backdrop-filter: blur(20px) saturate(170%); backdrop-filter: blur(20px) saturate(170%);
+    border: 1px solid rgba(255,255,255,0.22);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), -1px 0 0 rgba(255,60,130,0.4), 1px 0 0 rgba(60,220,255,0.4), 0 16px 36px rgba(0,0,0,0.3);
+  }
+  .ab { text-shadow: -1.5px 0 rgba(255,50,120,0.75), 1.5px 0 rgba(40,220,255,0.75); }
+  .ab-soft { text-shadow: -1px 0 rgba(255,50,120,0.55), 1px 0 rgba(40,220,255,0.55); }
+  .mono { font-family: 'Geist Mono', monospace; }
+
+  .stage { position: relative; height: 100vh; aspect-ratio: 1376 / 1824; max-width: 100vw; margin: 0 auto; overflow: hidden; }
+  #bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(10,12,16,0.45) 0%, rgba(10,12,16,0) 16%, rgba(10,12,16,0) 65%, rgba(10,12,16,0.5) 100%); }
+  .edge { position: absolute; inset: 0; pointer-events: none; opacity: 0; box-shadow: inset 0 0 0 3px var(--cue), inset 0 0 80px var(--cue); transition: opacity 0.6s; }
+  .edge.on { opacity: 0.55; transition: opacity 0.05s; }
+
+  .top { position: absolute; top: 16px; left: 16px; right: 16px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 16px; font-size: 13px; font-weight: 500; }
+  .row { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .live { background: #ff4d6d; box-shadow: 0 0 10px #ff4d6d; }
+  .chip { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 16px; background: rgba(255,255,255,0.14); }
+  .bandlight { width: 10px; height: 10px; border-radius: 50%; background: #9aa3ad; transition: background 0.2s, box-shadow 0.2s; }
+
+  .history { position: absolute; top: 72px; right: 16px; display: flex; gap: 5px; padding: 8px 10px; border-radius: 14px; }
+  .history span { width: 8px; height: 8px; border-radius: 50%; }
+
+  .card { position: absolute; right: 16px; bottom: 20px; width: min(340px, calc(100% - 32px)); border-radius: 26px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;
+          opacity: 0; transform: translateY(16px) scale(0.98); transition: opacity 0.35s, transform 0.35s; }
+  .card.on { opacity: 1; transform: none; }
+  .kind { font-size: 12px; color: var(--dim); }
+  .line { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .stat { padding: 8px 10px; border-radius: 14px; background: rgba(255,255,255,0.1); }
+  .stat small { display: block; font-size: 10px; color: var(--dim); }
+  .stat b { font-size: 15px; font-weight: 600; }
+  .timing { position: relative; height: 22px; }
+  .timing .track { position: absolute; left: 0; right: 0; top: 9px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.15); }
+  .timing .window { position: absolute; top: 4px; height: 14px; border-radius: 7px; border: 1px dashed rgba(230,255,106,0.8); }
+  .timing .peak { position: absolute; top: 2px; width: 2px; height: 18px; background: var(--ink); }
+  .timing .hit { position: absolute; top: 4px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--cue); box-shadow: -2px 0 0 rgba(255,50,120,0.6), 2px 0 0 rgba(40,220,255,0.6); transition: left 0.3s; }
+
+  .waiting { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); padding: 10px 16px; border-radius: 18px; font-size: 13px; white-space: nowrap; }
+
+  .controls { position: fixed; left: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 18px; font-size: 12px; }
+  .controls[hidden], #simButtons[hidden] { display: none !important; }
+  .controls button, .controls select { font: inherit; color: var(--ink); background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 8px 12px; cursor: pointer; }
+  .controls button:hover { background: rgba(255,255,255,0.2); }
+  .controls label { color: var(--dim); }
+</style>
+<style>
+  .card, .edge, .timing .hit, .bandlight { transition: none !important; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <img id="bg" alt="">
+  <div class="shade"></div>
+  <div class="edge" id="edge"></div>
+
+  <div class="top glass">
+    <div class="row"><span class="dot live"></span><span id="status">Live · motion 416/s</span></div>
+    <div class="chip"><span class="bandlight" id="bandlight"></span><span id="bandname">Vexo-HACK-56</span></div>
+  </div>
+
+  <div class="history glass" id="history" hidden></div>
+
+  <div class="waiting glass" id="waiting">Swing to get a cue</div>
+
+  <section class="card glass" id="card" aria-live="polite">
+    <div>
+      <div class="row kind"><span class="dot" id="cuedot"></span><span>From your band · swing <span id="count">0</span></span></div>
+      <div class="line ab" id="line"></div>
+    </div>
+    <div class="timing" aria-hidden="true">
+      <div class="track"></div>
+      <div class="window" id="window"></div>
+      <div class="peak" id="peak"></div>
+      <div class="hit" id="hit"></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><small>Contact vs peak</small><b class="mono ab-soft" id="contact">–</b></div>
+      <div class="stat"><small>Wrist speed</small><b class="mono ab-soft" id="speed">–</b></div>
+      <div class="stat"><small>Follow-through</small><b class="mono ab-soft" id="follow">–</b></div>
+    </div>
+  </section>
+</main>
+<script>
+const LATE_MS = 15;
+const CARD_S = 3.5, FADE_S = 0.35, FLASH_S = 0.25, EDGE_FADE_S = 0.6;
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => Math.round(n).toLocaleString();
+let segments = [];
+
+window.setup = (tracks) => { segments = tracks; };
+
+function eventsUpTo(seg, t) {
+  const prior = segments.slice(0, seg).flatMap((s) => s.events);
+  return prior.concat(segments[seg].events.filter((e) => e.t <= t));
+}
+
+function showSwing(e) {
+  const s = e.swing;
+  document.documentElement.style.setProperty('--cue', e.color);
+  $('line').textContent = e.line;
+  $('count').textContent = e.n;
+  $('cuedot').style.background = e.color;
+  const contact = s.impact_vs_peak_ms;
+  $('contact').textContent = `${contact > 0 ? '+' : '−'}${fmt(Math.abs(contact))} ms`;
+  $('contact').style.color = e.cue === 'late' ? e.color : '';
+  $('speed').textContent = `${fmt(s.peak_gyro)}°/s`;
+  $('follow').textContent = `${fmt(s.follow_ms)} ms`;
+  const peakAt = s.duration_ms - s.follow_ms - contact;
+  const pct = (ms) => `${Math.max(0, Math.min(100, (ms / s.duration_ms) * 100))}%`;
+  $('peak').style.left = pct(peakAt);
+  $('window').style.left = pct(peakAt - 20);
+  $('window').style.width = `${((20 + LATE_MS) / s.duration_ms) * 100}%`;
+  $('hit').style.left = pct(peakAt + contact);
+}
+
+const ease = (x) => 1 - Math.pow(1 - Math.max(0, Math.min(1, x)), 3);
+
+function cardLevel(age) {
+  if (age < CARD_S) return ease(age / FADE_S);
+  return 1 - ease((age - CARD_S) / FADE_S);
+}
+
+function edgeLevel(age) {
+  if (age < FLASH_S) return 0.55;
+  return 0.55 * (1 - ease((age - FLASH_S) / EDGE_FADE_S));
+}
+
+window.renderFrame = async (seg, t, url) => {
+  const img = $('bg');
+  img.src = url;
+  await img.decode();
+  const seen = eventsUpTo(seg, t);
+  const own = segments[seg].events.filter((e) => e.t <= t);
+  const last = own[own.length - 1];
+  const age = last ? t - last.t : Infinity;
+
+  $('waiting').hidden = seen.length > 0;
+  $('history').hidden = seen.length === 0;
+  $('history').replaceChildren(...seen.slice(-12).map((e) => {
+    const d = document.createElement('span');
+    d.style.background = e.color;
+    return d;
+  }));
+
+  const card = $('card');
+  const lvl = last ? cardLevel(age) : 0;
+  if (last) showSwing(last);
+  card.style.opacity = lvl;
+  card.style.transform = `translateY(${16 * (1 - lvl)}px) scale(${0.98 + 0.02 * lvl})`;
+  $('edge').style.opacity = last ? edgeLevel(age) : 0;
+  const lit = last && age < CARD_S;
+  $('bandlight').style.background = lit ? last.color : '';
+  $('bandlight').style.boxShadow = lit ? `0 0 12px ${last.color}` : '';
+};
+</script>
+</body>
+</html>
