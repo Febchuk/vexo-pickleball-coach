@@ -1,0 +1,32 @@
+{
+ "clip": "IMG_6446",
+ "start": 1.4,
+ "end": 11.4,
+ "session": {
+  "swings": 11,
+  "good": 7
+ },
+ "events": [
+  {
+   "t": 6.7,
+   "type": "tactic",
+   "cue": "attack",
+   "voice": "go-middle",
+   "line": "Go middle",
+   "why": "Gap between them is open"
+  },
+  {
+   "t": 8.48,
+   "contact_s": 8.28,
+   "type": "swing",
+   "cue": "good",
+   "line": "Nice. Same again.",
+   "swing": {
+    "duration_ms": 455,
+    "peak_gyro": 1538,
+    "impact_vs_peak_ms": 6,
+    "follow_ms": 262
+   }
+  }
+ ]
+}

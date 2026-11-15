@@ -1,0 +1,45 @@
+{
+ "clip": "IMG_6443",
+ "start": 19.4,
+ "end": 28.4,
+ "session": {
+  "swings": 3,
+  "good": 2
+ },
+ "events": [
+  {
+   "t": 23.22,
+   "contact_s": 23.02,
+   "type": "swing",
+   "cue": "late",
+   "line": "Meet it in front",
+   "swing": {
+    "duration_ms": 410,
+    "peak_gyro": 1312,
+    "impact_vs_peak_ms": 46,
+    "follow_ms": 188
+   }
+  },
+  {
+   "t": 24.35,
+   "type": "tactic",
+   "cue": "attack",
+   "voice": "attack-forehand",
+   "line": "Attack the forehand",
+   "why": "His forehand floats when rushed"
+  },
+  {
+   "t": 26.15,
+   "contact_s": 25.95,
+   "type": "swing",
+   "cue": "good",
+   "line": "Nice. Same again.",
+   "swing": {
+    "duration_ms": 470,
+    "peak_gyro": 1724,
+    "impact_vs_peak_ms": -3,
+    "follow_ms": 284
+   }
+  }
+ ]
+}
