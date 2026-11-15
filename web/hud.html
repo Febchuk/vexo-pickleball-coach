@@ -150,7 +150,7 @@
 </main>
 
 <aside class="controls" id="controls">
-  <label for="source">Video (H hides this · P shows who you're talking to)</label>
+  <label for="source">Video (H hides this · B or P: who you're talking to · F: portrait crop of a live feed)</label>
   <select id="source">
     <option value="clip:media/pov-6440.mp4">Clip · IMG_6440</option>
     <option value="clip:media/pov-6432.mp4">Clip · IMG_6432</option>
@@ -273,12 +273,19 @@ async function useSource(value) {
 }
 $('source').addEventListener('change', (ev) => useSource(ev.target.value));
 
+// The glasses film portrait. A live feed (a shared call window, a camera) is usually wide with the
+// portrait picture in its middle, so it is cropped to a portrait frame from the center; F toggles that.
+const PORTRAIT = 1376 / 1824;
+let cropLive = true;
 function fitStage() {
   const v = $('video');
   if (!v.videoWidth) return;
-  $('stage').style.setProperty('--ar', `${v.videoWidth} / ${v.videoHeight}`);
-  $('stage').classList.toggle('tall', v.videoWidth / v.videoHeight < 1.2);
+  const live = !!v.srcObject;
+  const ar = live && cropLive ? PORTRAIT : v.videoWidth / v.videoHeight;
+  $('stage').style.setProperty('--ar', String(ar));
+  $('stage').classList.toggle('tall', ar < 1.2);
 }
+document.addEventListener('keydown', (k) => { if (k.key === 'f' || k.key === 'F') { cropLive = !cropLive; fitStage(); } });
 $('video').addEventListener('loadedmetadata', fitStage);
 $('video').addEventListener('resize', fitStage);
 fitStage();
@@ -336,7 +343,7 @@ function showPerson(on) {
   $('talking').hidden = !on;
   $('mention').hidden = !on || !PERSON.mention;
 }
-document.addEventListener('keydown', (k) => { if (k.key === 'p' || k.key === 'P') showPerson($('person').hidden); });
+document.addEventListener('keydown', (k) => { if ('pPbB'.includes(k.key)) showPerson($('person').hidden); });
 if (location.hash === '#person') showPerson(true);
 </script>
 </body>
