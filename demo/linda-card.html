@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Profile overlay</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 1440px; height: 1920px; background: transparent; font-family: Outfit, sans-serif; color: #fff; }
+  .panel { position: absolute; background: rgba(18,24,21,0.55); border: 2px solid rgba(255,255,255,0.22); border-radius: 44px; box-shadow: -2px 0 0 rgba(255,60,130,0.45), 2px 0 0 rgba(60,220,255,0.45); }
+  .brand { left: 48px; top: 56px; display: flex; align-items: center; gap: 22px; padding: 22px 30px; font-size: 32px; }
+  .brand b { letter-spacing: 0.08em; font-size: 34px; }
+  .brand span { color: #D2DCD6; }
+  .dot { width: 18px; height: 18px; border-radius: 9px; background: #FF5D5D; }
+  .tag { left: 50%; top: 210px; transform: translateX(-50%); display: flex; align-items: center; gap: 22px; padding: 18px 34px 18px 18px; border-radius: 56px; border: 3px solid #5CA8FF; white-space: nowrap; }
+  .tag .chip { padding: 12px 20px; border-radius: 16px; background: #5CA8FF; color: #1E2A3A; font-size: 26px; font-weight: 700; letter-spacing: 0.08em; }
+  .tag .name { font-size: 52px; font-weight: 700; letter-spacing: -0.01em; }
+  .card { left: 48px; right: 48px; bottom: 64px; padding: 40px 44px; display: flex; flex-direction: column; gap: 26px; }
+  .row { display: flex; align-items: center; gap: 28px; }
+  .initial { width: 120px; height: 120px; border-radius: 60px; background: linear-gradient(135deg, #7C7BF2, #2FA383); display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: 700; flex-shrink: 0; }
+  .who { display: flex; flex-direction: column; gap: 6px; }
+  .who .n { font-size: 72px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; text-shadow: -2px 0 rgba(255,50,120,0.7), 2px 0 rgba(40,220,255,0.7); }
+  .who .r { font-size: 36px; color: #D2DCD6; }
+  .li { display: flex; align-items: center; gap: 22px; padding: 22px 26px; border-radius: 28px; background: rgba(255,255,255,0.12); font-size: 34px; }
+  .li .logo { width: 56px; height: 56px; border-radius: 12px; background: #0A66C2; color: #fff; font-weight: 700; font-size: 34px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .li .url { font-weight: 600; }
+  .li .cta { margin-left: auto; padding: 14px 24px; border-radius: 999px; background: #D7F25C; color: #0A0E0C; font-weight: 600; font-size: 30px; }
+  .note { font-size: 30px; color: #D2DCD6; }
+</style>
+</head>
+<body>
+  <div class="panel brand"><span class="dot"></span><b>VEXO</b><span>Player recognized</span></div>
+  <div class="panel tag"><span class="chip">INVESTOR</span><span class="name">Linda</span></div>
+  <div class="panel card">
+    <div class="row">
+      <div class="initial">L</div>
+      <div class="who"><span class="n">Linda</span><span class="r">Investor</span></div>
+    </div>
+    <div class="li"><span class="logo">in</span><span class="url">linkedin.com/in/linda-vexo-demo</span><span class="cta">Connect</span></div>
+    <div class="note">Played together today · saved to your Players</div>
+  </div>
+</body>
+</html>
