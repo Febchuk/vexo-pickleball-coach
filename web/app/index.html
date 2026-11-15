@@ -486,9 +486,14 @@ function connect() {
       state.status = ev;
     } else if (ev.type === 'swing') {
       if (state.swings.some(s => s.n === ev.n)) return;
+      if (ev.said) ev.line = ev.said;
       state.swings.push(ev);
       state.freshN = ev.replay ? null : ev.n;
       if (!ev.replay) setTimeout(() => { if (state.freshN === ev.n) state.freshN = null; }, 700);
+    } else if (ev.type === 'coach') {
+      // The AI coach's words for a swing replace its rule-based line.
+      const sw = state.swings.find(s => s.n === ev.n);
+      if (sw) sw.line = ev.line;
     }
     // Replay arrives as a burst; render once after it settles instead of per event.
     clearTimeout(replayTimer);

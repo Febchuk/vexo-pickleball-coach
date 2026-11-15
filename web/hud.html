@@ -140,7 +140,7 @@ const KINDS = {
   good: { tag: 'GOOD SHOT', color: '#5BD68A', light: 'Green · good shot', verdict: 'Clean', why: (s) => `Contact at peak speed · ${Math.round(s.peak_gyro).toLocaleString()}°/s` },
 };
 const $ = (id) => document.getElementById(id);
-let staleTimer, edgeTimer, lightTimer, count = 0, good = 0;
+let staleTimer, edgeTimer, lightTimer, count = 0, good = 0, lastN = 0;
 
 function onStatus(e) {
   $('bandDot').style.background = '#5BD68A';
@@ -155,6 +155,7 @@ function onSwing(e) {
   if (e.cue === 'good') good += 1;
   $('session').textContent = `Swing ${count} · ${Math.round((good / count) * 100)}% on time`;
   if (e.replay) return;
+  lastN = e.n;
 
   document.documentElement.style.setProperty('--cue', k.color);
   $('cue').hidden = false;
@@ -191,6 +192,11 @@ source.onmessage = (m) => {
   const e = JSON.parse(m.data);
   if (e.type === 'status') onStatus(e);
   else if (e.type === 'swing') onSwing(e);
+  else if (e.type === 'coach' && e.n === lastN) {
+    // The AI coach's words for the swing just made replace the rule-based line.
+    $('line').textContent = e.line;
+    if (e.why) $('why').textContent = e.why;
+  }
 };
 source.onerror = () => { $('bandDot').style.background = '#FF5D5D'; $('bandText').textContent = 'Coach offline'; };
 source.onopen = () => { count = 0; good = 0; };

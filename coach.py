@@ -18,6 +18,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Callable
 
+import ai_coach
 import swing
 from vexo_open.transport import VexoError
 
@@ -154,6 +155,38 @@ class Voice:
         self.proc = subprocess.Popen(cmd)
         self.last = time.time()
 
+    def play(self, path):
+        if self.proc and self.proc.poll() is None:
+            return
+        self.proc = subprocess.Popen(["afplay", str(path)])
+        self.last = time.time()
+
+
+AI_STALE_S = 4.0                # an AI line that arrives later than this after the swing isn't spoken
+AI_AUDIO = Path(__file__).resolve().parent / "data" / "ai-voice"
+
+
+def ai_cue(event, history, cue, voice, latest, speak):
+    """Runs beside the band loop: Claude picks the words, ElevenLabs says them, the overlays show them.
+    Falls back to the recorded line when the AI is slow or unavailable."""
+    started = time.time()
+    said = ai_coach.coach_line(history)
+    fresh = latest[0] == event["n"] and time.time() - started < AI_STALE_S
+    if not said or not fresh:
+        if speak and latest[0] == event["n"]:
+            voice.say(cue)
+        return
+    event["said"] = said["line"]
+    hub.publish({"type": "coach", "n": event["n"], "line": said["line"], "why": said["why"], "source": "ai"})
+    print(f"    AI coach: {said['line']}  ({said['why']})  {time.time() - started:.1f} s")
+    if speak:
+        AI_AUDIO.mkdir(parents=True, exist_ok=True)
+        path = AI_AUDIO / f"{event['n']}.mp3"
+        if ai_coach.speak_file(said["line"], path) and latest[0] == event["n"]:
+            voice.play(path)
+        else:
+            voice.say(cue)
+
 
 # Pretend swings for --sim, by the cue they should produce.
 SIM = {
@@ -195,6 +228,8 @@ def main(argv):
 
     detector = swing.SwingDetector()
     voice = Voice()
+    latest = [0]                # the newest swing number, so a slow AI reply for an older swing is dropped
+    print("AI coach:", "on (Claude writes the lines)" if ai_coach.available() else "off (no ANTHROPIC_API_KEY; recorded lines)")
     led_reset_at = None
     count = 0
     try:
@@ -211,9 +246,14 @@ def main(argv):
                 cue = judge(s)
                 set_led(band, cue.color)
                 led_reset_at = time.time() + LED_FLASH_S
-                if "--mute" not in argv:
+                event = {"type": "swing", "n": count, "cue": cue.key, "color": cue.color, "line": cue.line, "swing": s.as_dict()}
+                hub.publish(event)
+                latest[0] = count
+                speak = "--mute" not in argv
+                if ai_coach.available():
+                    threading.Thread(target=ai_cue, args=(event, list(hub.swings), cue, voice, latest, speak), daemon=True).start()
+                elif speak:
                     voice.say(cue)
-                hub.publish({"type": "swing", "n": count, "cue": cue.key, "color": cue.color, "line": cue.line, "swing": s.as_dict()})
                 print(f"#{count:2d} {cue.key:5s}  speed {s.peak_gyro:5.0f} deg/s  contact {s.impact_vs_peak_ms:+4.0f} ms  follow {s.follow_ms:4.0f} ms")
             if led_reset_at and time.time() > led_reset_at:
                 set_led(band, *LED_IDLE)

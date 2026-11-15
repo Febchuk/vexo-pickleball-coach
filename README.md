@@ -28,6 +28,7 @@ The glasses view and the glass overlay plays a POV clip, or the glasses' live fe
 | File | What it does |
 | --- | --- |
 | `coach.py` | The live loop: band motion → swing → cue (band light + voice) → events to the overlay (server-sent events on `/events`). Cue rules are the `CUES` table at the top. |
+| `ai_coach.py` | The AI coach: after each swing, Claude (Opus 5.5, low effort) writes the spoken line from the swing and the session's trend, ElevenLabs speaks it, and the overlays show it. Needs `ANTHROPIC_API_KEY` in your environment or `.env`; without it the recorded lines play. |
 | `swing.py` | Swing detection from the motion stream, and the connect helper. |
 | `record_swings.py` | Record labelled swings to `data/` for tuning the thresholds. |
 | `render_voice.py` | Records each cue line with ElevenLabs into `voice/`. Needs `ELEVENLABS_API_KEY` in your environment or an untracked `.env`. |
