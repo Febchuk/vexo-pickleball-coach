@@ -2,41 +2,97 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Profile overlay</title>
+<title>Linda overlays</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   html, body { margin: 0; width: 1440px; height: 1920px; background: transparent; font-family: Outfit, sans-serif; color: #fff; }
+  [hidden] { display: none !important; }
   .panel { position: absolute; background: rgba(18,24,21,0.55); border: 2px solid rgba(255,255,255,0.22); border-radius: 44px; box-shadow: -2px 0 0 rgba(255,60,130,0.45), 2px 0 0 rgba(60,220,255,0.45); }
   .brand { left: 48px; top: 56px; display: flex; align-items: center; gap: 22px; padding: 22px 30px; font-size: 32px; }
   .brand b { letter-spacing: 0.08em; font-size: 34px; }
   .brand span { color: #D2DCD6; }
   .dot { width: 18px; height: 18px; border-radius: 9px; background: #FF5D5D; }
-  .tag { left: 50%; top: 210px; transform: translateX(-50%); display: flex; align-items: center; gap: 22px; padding: 18px 34px 18px 18px; border-radius: 56px; border: 3px solid #5CA8FF; white-space: nowrap; }
-  .tag .chip { padding: 12px 20px; border-radius: 16px; background: #5CA8FF; color: #1E2A3A; font-size: 26px; font-weight: 700; letter-spacing: 0.08em; }
+  .tag { left: 50%; top: 210px; transform: translateX(-50%); display: flex; align-items: center; gap: 22px; padding: 18px 34px 18px 18px; border-radius: 56px; border: 3px solid var(--c, #5CA8FF); white-space: nowrap; }
+  .tag .chip { padding: 12px 20px; border-radius: 16px; background: var(--c, #5CA8FF); color: #1E2A3A; font-size: 26px; font-weight: 700; letter-spacing: 0.08em; }
   .tag .name { font-size: 52px; font-weight: 700; letter-spacing: -0.01em; }
-  .card { left: 48px; right: 48px; bottom: 64px; padding: 40px 44px; display: flex; flex-direction: column; gap: 26px; }
+  .card { left: 48px; right: 48px; bottom: 64px; padding: 36px 40px; display: flex; flex-direction: column; gap: 24px; }
   .row { display: flex; align-items: center; gap: 28px; }
-  .initial { width: 120px; height: 120px; border-radius: 60px; background: linear-gradient(135deg, #7C7BF2, #2FA383); display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: 700; flex-shrink: 0; }
+  .avatar { width: 150px; height: 150px; border-radius: 75px; background: linear-gradient(135deg, #7C7BF2, #2FA383); flex-shrink: 0; overflow: hidden; }
+  .avatar img { width: 100%; height: 100%; }
   .who { display: flex; flex-direction: column; gap: 6px; }
   .who .n { font-size: 72px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; text-shadow: -2px 0 rgba(255,50,120,0.7), 2px 0 rgba(40,220,255,0.7); }
   .who .r { font-size: 36px; color: #D2DCD6; }
-  .li { display: flex; align-items: center; gap: 22px; padding: 22px 26px; border-radius: 28px; background: rgba(255,255,255,0.12); font-size: 34px; }
-  .li .logo { width: 56px; height: 56px; border-radius: 12px; background: #0A66C2; color: #fff; font-weight: 700; font-size: 34px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .li .url { font-weight: 600; }
-  .li .cta { margin-left: auto; padding: 14px 24px; border-radius: 999px; background: #D7F25C; color: #0A0E0C; font-weight: 600; font-size: 30px; }
-  .note { font-size: 30px; color: #D2DCD6; }
+  .split { display: flex; gap: 28px; align-items: stretch; }
+  .spider { flex: 1; border-radius: 28px; background: rgba(255,255,255,0.10); padding: 14px 10px 6px; display: flex; flex-direction: column; align-items: center; }
+  .spider .lbl { align-self: flex-start; margin-left: 18px; font-size: 24px; font-weight: 600; letter-spacing: 0.08em; color: #D2DCD6; }
+  .info { width: 470px; border-radius: 28px; background: rgba(245,180,60,0.16); border: 2px solid #F5B43C; padding: 26px 28px; display: flex; flex-direction: column; gap: 14px; }
+  .info .k { font-size: 24px; font-weight: 700; letter-spacing: 0.08em; color: #F5B43C; }
+  .info .v { font-size: 40px; font-weight: 600; line-height: 1.2; }
+  .info .s { font-size: 28px; color: #D2DCD6; line-height: 1.35; }
+  .prompt { left: 48px; right: 48px; top: 330px; padding: 26px 34px; border-radius: 40px; border: 3px solid #5CA8FF; background: rgba(92,168,255,0.22); display: flex; align-items: center; gap: 24px; }
+  .prompt .chip { padding: 12px 20px; border-radius: 16px; background: #5CA8FF; color: #1E2A3A; font-size: 26px; font-weight: 700; letter-spacing: 0.08em; flex-shrink: 0; }
+  .prompt .say { font-size: 50px; font-weight: 700; letter-spacing: -0.01em; }
+  .pill { left: 50%; top: 330px; transform: translateX(-50%); padding: 16px 28px; border-radius: 999px; font-size: 32px; color: #D2DCD6; white-space: nowrap; }
 </style>
 </head>
 <body>
-  <div class="panel brand"><span class="dot"></span><b>VEXO</b><span>Player recognized</span></div>
-  <div class="panel tag"><span class="chip">INVESTOR</span><span class="name">Linda</span></div>
-  <div class="panel card">
-    <div class="row">
-      <div class="initial">L</div>
-      <div class="who"><span class="n">Linda</span><span class="r">Investor</span></div>
+  <!-- One layer per ?layer=: part1, card, prompt, handshake -->
+  <section data-layer="part1" hidden>
+    <div class="panel brand"><span class="dot"></span><b>VEXO</b><span>Live · on court</span></div>
+  </section>
+
+  <section data-layer="card" hidden>
+    <div class="panel brand"><span class="dot"></span><b>VEXO</b><span>Player recognized</span></div>
+    <div class="panel tag"><span class="chip">INVESTOR</span><span class="name">Linda</span></div>
+    <div class="panel card">
+      <div class="row">
+        <div class="avatar"><img src="linda-avatar.png" alt=""></div>
+        <div class="who"><span class="n">Linda</span><span class="r">Investor · played together today</span></div>
+      </div>
+      <div class="split">
+        <div class="spider">
+          <span class="lbl">HER GAME</span>
+          <svg width="560" height="400" viewBox="0 0 560 400" id="chart"></svg>
+        </div>
+        <div class="info">
+          <span class="k">IMPORTANT INFO</span>
+          <span class="v">Her company just went through a merger</span>
+          <span class="s">Wish her luck on it.</span>
+        </div>
+      </div>
     </div>
-    <div class="li"><span class="logo">in</span><span class="url">linkedin.com/in/linda-vexo-demo</span><span class="cta">Connect</span></div>
-    <div class="note">Played together today · saved to your Players</div>
-  </div>
+  </section>
+
+  <section data-layer="prompt" hidden>
+    <div class="panel prompt"><span class="chip">SAY</span><span class="say">“Good luck on the merger.”</span></div>
+  </section>
+
+  <section data-layer="handshake" hidden>
+    <div class="panel brand"><span class="dot"></span><b>VEXO</b><span>Handshake</span></div>
+    <div class="panel tag" style="--c: #5BD68A"><span class="chip">CONNECTED</span><span class="name">Linda</span></div>
+    <div class="panel pill">Saved to your Players · investor</div>
+  </section>
+
+<script>
+  const layer = new URLSearchParams(location.search).get('layer') || 'card';
+  document.querySelector(`[data-layer="${layer}"]`).hidden = false;
+
+  // Her shot skills (illustrative), drawn as a radar chart.
+  const axes = ['Serve', 'Forehand', 'Backhand', 'Dink', 'Drops', 'Volley'];
+  const vals = [70, 64, 58, 76, 62, 68];
+  const cx = 280, cy = 205, R = 118, n = axes.length;
+  const pt = (i, v) => { const a = (-90 + i * 360 / n) * Math.PI / 180, d = R * v / 100; return [cx + d * Math.cos(a), cy + d * Math.sin(a)]; };
+  const poly = (vs) => vs.map((v, i) => pt(i, v).map((x) => x.toFixed(1)).join(',')).join(' ');
+  let svg = '';
+  for (const r of [25, 50, 75, 100]) svg += `<polygon points="${poly(axes.map(() => r))}" fill="none" stroke="rgba(255,255,255,${r === 100 ? 0.4 : 0.2})" stroke-width="2"/>`;
+  axes.forEach((_, i) => { const [x, y] = pt(i, 100); svg += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>`; });
+  svg += `<polygon points="${poly(vals)}" fill="rgba(255,143,200,0.32)" stroke="#FF8FC8" stroke-width="4"/>`;
+  axes.forEach((name, i) => {
+    const [x, y] = pt(i, 122);
+    const anchor = Math.abs(x - cx) < 10 ? 'middle' : x > cx ? 'start' : 'end';
+    svg += `<text x="${x}" y="${y + 8}" text-anchor="${anchor}" fill="#D2DCD6" font-family="Outfit" font-size="24">${name} ${vals[i]}</text>`;
+  });
+  document.getElementById('chart').innerHTML = svg;
+</script>
 </body>
 </html>
