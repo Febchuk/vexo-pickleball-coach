@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E1411">
+<title>Vexo Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0E1411;--card:#18221D;--line:#22302A;--line2:#3A4A43;--lime:#D7F25C;--green:#5BD68A;--amber:#F5B43C;--blue:#5CA8FF;--red:#FF8A8A;--t1:#FFFFFF;--t2:#D2DCD6;--t3:#B9C7C0;--t4:#8FA399}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#070a08}
+body{color:var(--t1);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--lime)}
+button{font-family:Inter,sans-serif}
+.app{max-width:430px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
+main{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+main::-webkit-scrollbar{display:none}
+.screen{display:flex;flex-direction:column;gap:16px;padding:56px 20px 20px}
+.screen.tight{gap:14px;padding-top:52px}
+.h{font-family:'Space Grotesk',Inter,sans-serif;font-weight:700;margin:0}
+h1.h{font-size:26px}
+.sub{font-size:13px;color:var(--t3)}
+.card{background:var(--card);border-radius:16px}
+.label{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
+.row{display:flex;align-items:center}
+.col{display:flex;flex-direction:column}
+.between{justify-content:space-between}
+.sample{display:inline-block;padding:2px 6px;border-radius:5px;background:rgba(185,199,192,.14);color:var(--t3);font-size:10px;font-weight:700;letter-spacing:.08em;vertical-align:middle;margin-left:6px}
+.live-tag{display:inline-block;padding:2px 6px;border-radius:5px;background:rgba(91,214,138,.18);color:var(--green);font-size:10px;font-weight:700;letter-spacing:.08em;margin-left:6px;vertical-align:middle}
+.pill{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:13px;font-weight:600}
+.dot{width:8px;height:8px;border-radius:4px;flex-shrink:0}
+nav.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:10px 12px 28px;border-top:1px solid var(--line);background:var(--bg);flex-shrink:0}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:var(--t3);text-decoration:none;font-size:12px}
+nav.tabs a.on{color:var(--lime);font-weight:600}
+.dev{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:12px;background:var(--card)}
+.dev b{font-size:13px;font-weight:600}
+.dev span{font-size:12px}
+.cue{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;border:2px solid}
+.cue .tag{white-space:nowrap;padding:4px 8px;border-radius:6px;color:var(--bg);font-size:12px;font-weight:700;letter-spacing:.08em}
+.cue .big{font-family:'Space Grotesk',Inter,sans-serif;font-size:26px;font-weight:700;line-height:1.15}
+.cue.pop{animation:pop .5s ease-out}
+@keyframes pop{0%{transform:scale(.96);box-shadow:0 0 0 0 var(--glow)}60%{transform:scale(1.01);box-shadow:0 0 0 10px transparent}100%{transform:scale(1)}}
+.item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--card)}
+.item.fresh{animation:slide .35s ease-out}
+@keyframes slide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.item .t{font-size:15px;font-weight:600}
+.item .d{font-size:12px;color:var(--t3)}
+.empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:28px 18px;border-radius:16px;border:2px dashed var(--line2);text-align:center}
+.stat{display:flex;flex-direction:column;gap:2px;padding:12px;border-radius:12px;background:#121A16}
+.stat .v{font-family:'Space Grotesk',Inter,sans-serif;font-size:22px;font-weight:700}
+.stat .k{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--t3)}
+.timeline{display:flex;flex-wrap:wrap;gap:5px}
+.timeline i{width:12px;height:12px;border-radius:6px;display:block}
+.skill{display:grid;grid-template-columns:112px 1fr 30px 36px;gap:8px;align-items:center}
+.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar div{height:8px;border-radius:4px}
+.trow{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:15px}
+.trow:last-child{border-bottom:0}
+.trow span+span{text-align:right;font-weight:600}
+.av{width:36px;height:36px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.prow{display:grid;grid-template-columns:36px 1fr 52px 52px;gap:8px;align-items:center;min-height:44px;padding:8px 14px;border-radius:14px;background:var(--card);color:#fff;text-decoration:none}
+.num{font-family:'Space Grotesk',Inter,sans-serif;font-size:16px;font-weight:700;text-align:right}
+.kv{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+.kv:last-child{border-bottom:0}
+.btn{min-height:44px;padding:0 14px;border:0;border-radius:10px;font:600 14px Inter,sans-serif;cursor:pointer}
+.spider{position:relative;width:322px;align-self:center}
+.spider svg{position:absolute;inset:0}
+.spider span{position:absolute;font-size:11px;color:var(--t2);white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="app">
+  <main id="main"></main>
+  <nav class="tabs" id="tabs" aria-label="Main"></nav>
+</div>
+<script>
+const COLOR = { amber: '#F5B43C', green: '#5BD68A', blue: '#5CA8FF', lime: '#D7F25C' };
+
+const CUES = {
+  late:  { kind: 'fix',  label: 'Late contact',   color: COLOR.amber },
+  short: { kind: 'fix',  label: 'Short finish',   color: COLOR.amber },
+  slow:  { kind: 'fix',  label: 'Slow swing',     color: COLOR.amber },
+  good:  { kind: 'good', label: 'On time',        color: COLOR.green },
+};
+
+const state = { status: null, connected: false, swings: [], freshN: null };
+
+const ICON = {
+  live: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>',
+  me: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>',
+  players: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-3-1.8-5.3-4.5-5.9"/></svg>',
+  recap: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  glasses: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D2DCD6" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="6.5" cy="13" r="3.5"/><circle cx="17.5" cy="13" r="3.5"/><path d="M10 13h4M3 13V9l2-3M21 13V9l-2-3"/></svg>',
+  band: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D2DCD6" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="7" y="6" width="10" height="12" rx="3"/><path d="M9 6V3h6v3M9 18v3h6v-3"/></svg>',
+  chev: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B9C7C0" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>',
+  back: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>',
+  mic: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+  speaker: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+  star: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5B43C" stroke-width="2" aria-hidden="true"><path d="M12 3 14.5 9l6.5.5-5 4.2 1.6 6.3L12 16.6 6.4 20l1.6-6.3-5-4.2L9.5 9z"/></svg>',
+};
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fmt = n => Math.round(n).toLocaleString('en-US');
+const signed = n => (n >= 0 ? '+' : '') + Math.round(n);
+
+function detail(sw) {
+  const s = sw.swing;
+  const speed = fmt(s.peak_gyro) + '°/s';
+  if (sw.cue === 'short') return 'follow ' + fmt(s.follow_ms) + ' ms · ' + speed;
+  if (sw.cue === 'slow') return speed + ' · contact ' + signed(s.impact_vs_peak_ms) + ' ms';
+  return 'contact ' + signed(s.impact_vs_peak_ms) + ' ms · ' + speed;
+}
+
+function sessionStats() {
+  const sw = state.swings;
+  if (!sw.length) return null;
+  const avg = f => sw.reduce((a, x) => a + f(x.swing), 0) / sw.length;
+  return {
+    count: sw.length,
+    onTime: Math.round(100 * sw.filter(x => x.cue === 'good').length / sw.length),
+    speed: avg(s => s.peak_gyro),
+    follow: avg(s => s.follow_ms),
+  };
+}
+
+// ---------------------------------------------------------------- screens
+
+function screenLive() {
+  const st = state.status;
+  const bandOk = st && state.connected;
+  const bandText = bandOk ? (st.sim ? 'Simulated' : 'Connected') : (state.connected ? 'Waiting…' : 'Offline');
+  const bandColor = bandOk ? COLOR.green : COLOR.amber;
+  const latest = state.swings[state.swings.length - 1];
+
+  let cueCard;
+  if (!latest) {
+    cueCard = `<div class="empty">
+      <span class="h" style="font-size:22px">Swing to start</span>
+      <span style="font-size:14px;color:var(--t2);line-height:1.4">Your band is listening. Take a swing and your first cue lands here.</span>
+    </div>`;
+  } else {
+    const c = CUES[latest.cue] || CUES.good;
+    const tag = c.kind === 'good' ? 'GOOD SHOT' : 'FIX · ' + latest.cue.toUpperCase();
+    const bg = c.kind === 'good' ? 'rgba(91,214,138,0.12)' : 'rgba(245,180,60,0.12)';
+    const pop = state.freshN === latest.n ? ' pop' : '';
+    cueCard = `<div class="cue${pop}" style="background:${bg};border-color:${c.color};--glow:${c.color}66">
+      <div class="row between"><span class="tag" style="background:${c.color}">${tag}</span><span style="font-size:12px;color:var(--t3);white-space:nowrap">Swing #${latest.n} · ear + band light</span></div>
+      <span class="big">${esc(latest.line)}</span>
+      <span style="font-size:14px;color:var(--t2);line-height:1.4">${esc(detail(latest))} · follow-through ${fmt(latest.swing.follow_ms)} ms</span>
+    </div>`;
+  }
+
+  const items = state.swings.slice().reverse().map(sw => {
+    const c = CUES[sw.cue] || CUES.good;
+    const kind = c.kind === 'good' ? 'Good shot' : 'Fix · ' + c.label.toLowerCase();
+    const fresh = state.freshN === sw.n ? ' fresh' : '';
+    return `<div class="item${fresh}">
+      <span style="width:10px;height:10px;border-radius:5px;background:${c.color};flex-shrink:0"></span>
+      <div class="col" style="flex:1;gap:2px;min-width:0"><span class="t">${esc(sw.line)}</span><span class="d">${kind} · ${esc(detail(sw))}</span></div>
+      <span style="font-size:12px;color:var(--t3)">#${sw.n}</span>
+    </div>`;
+  }).join('');
+
+  return `<div class="screen">
+    <div class="row between">
+      <div class="col" style="gap:2px"><span class="sub">Doubles · ${st ? esc(st.band) : 'Court 3'}</span><h1 class="h">Live match</h1></div>
+      <span class="pill" style="background:rgba(255,93,93,0.15);color:#FF8A8A"><span class="dot" style="background:#FF5D5D"></span>LIVE</span>
+    </div>
+    <div class="card row between" style="padding:16px">
+      <div class="col" style="gap:4px"><span class="sub">You + Partner</span><span class="h" style="font-size:28px">[score]</span></div>
+      <span class="sub" style="text-align:center">Not<br>tracked</span>
+      <div class="col" style="gap:4px;align-items:flex-end"><span class="sub">Opponents</span><span class="h" style="font-size:28px;color:var(--t3)">[score]</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+      <div class="dev">${ICON.glasses}<b>Glasses</b><span style="color:var(--t3)">Via call · not tracked</span></div>
+      <div class="dev">${ICON.band}<b>Your band</b><span style="color:${bandColor}">${bandText}${st ? ' · ' + st.rate + '/s' : ''}</span></div>
+      <div class="dev">${ICON.band}<b>Partner band</b><span style="color:var(--t3)">Not paired</span></div>
+    </div>
+    ${cueCard}
+    <div class="col" style="gap:10px">
+      <span class="label">Cues this game${state.swings.length ? ' · ' + state.swings.length : ''}</span>
+      ${items || '<span class="sub">No swings yet.</span>'}
+    </div>
+  </div>`;
+}
+
+const SKILLS = [
+  { name: 'Power game', skills: [['Serve', 72, 3], ['Return', 66, 2], ['Forehand drive', 74, 4], ['Backhand drive', 49, 6], ['Overhead', 63, 0]] },
+  { name: 'Soft game', skills: [['Dink', 57, 5], ['Third-shot drop', 41, 7], ['Slice', 52, 1]] },
+  { name: 'Defense and movement', skills: [['Reset / dig', 38, 2], ['Volley hands', 61, 3], ['Kitchen arrival', 46, -2]] },
+];
+
+function screenMe() {
+  const s = sessionStats();
+  const session = s ? `
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+      <div class="stat"><span class="k">SWINGS</span><span class="v">${s.count}</span></div>
+      <div class="stat"><span class="k">ON-TIME</span><span class="v" style="color:${s.onTime >= 60 ? COLOR.green : COLOR.amber}">${s.onTime}%</span></div>
+      <div class="stat"><span class="k">AVG WRIST SPEED</span><span class="v">${fmt(s.speed)}<span style="font-size:13px;color:var(--t3)"> °/s</span></span></div>
+      <div class="stat"><span class="k">AVG FOLLOW-THRU</span><span class="v">${fmt(s.follow)}<span style="font-size:13px;color:var(--t3)"> ms</span></span></div>
+    </div>
+    <div class="timeline" aria-label="Cue per swing, oldest first">${state.swings.map(x => `<i title="#${x.n} ${x.cue}" style="background:${(CUES[x.cue] || CUES.good).color}"></i>`).join('')}</div>`
+    : `<span style="font-size:14px;color:var(--t2)">Swing to start. Your session stats fill in from the band.</span>`;
+
+  const groups = SKILLS.map(g => `<div class="col" style="gap:6px"><span style="font-size:12px;color:var(--t4)">${g.name}</span>${g.skills.map(([name, score, d]) => {
+    const color = score >= 65 ? COLOR.green : (score >= 50 ? COLOR.lime : COLOR.amber);
+    const trend = d > 0 ? '+' + d : String(d);
+    const tc = d > 0 ? COLOR.green : (d < 0 ? '#FF8A8A' : '#B9C7C0');
+    return `<div class="skill"><span style="font-size:13px">${name}</span><div class="bar"><div style="width:${score}%;background:${color}"></div></div><span style="font-size:13px;font-weight:600;text-align:right">${score}</span><span style="font-size:12px;text-align:right;color:${tc}">${trend}</span></div>`;
+  }).join('')}</div>`).join('');
+
+  return `<div class="screen tight">
+    <div class="row" style="gap:12px">
+      <span class="h" style="width:44px;height:44px;border-radius:22px;background:var(--lime);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px">Y</span>
+      <div class="col" style="gap:2px"><h1 class="h" style="font-size:24px">Your game</h1><span class="sub">12 tracked matches · right-handed</span></div>
+    </div>
+    <div class="card col" style="gap:12px;padding:14px;border:1px solid var(--line2)">
+      <div class="row between"><span class="label" style="color:var(--t1)">This session<span class="live-tag">LIVE</span></span><span class="sub">${state.status ? esc(state.status.band) : 'band'}</span></div>
+      ${session}
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+      <div class="card col" style="gap:4px;padding:14px;border-radius:14px">
+        <span style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--t3)">DUPR · DOUBLES<span class="sample">SAMPLE</span></span>
+        <span class="h" style="font-size:32px">3.42</span>
+        <span style="font-size:12px;color:var(--t3)">From match results · linked</span>
+      </div>
+      <div class="col" style="gap:4px;padding:14px;border-radius:14px;background:rgba(215,242,92,0.10);border:2px solid var(--lime)">
+        <span style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--lime)">VEXO RATING<span class="sample">SAMPLE</span></span>
+        <span class="h" style="font-size:32px">3.61</span>
+        <span style="font-size:12px;color:var(--green)">▲ 0.18 this month</span>
+      </div>
+    </div>
+    <span style="font-size:13px;color:var(--t2);line-height:1.4">Your shots are playing at 3.6. Your DUPR should catch up as you win more rated matches.</span>
+    <div class="col" style="gap:8px">
+      <div class="row between" style="align-items:baseline"><span class="label">Shot skills · 0–100<span class="sample">SAMPLE</span></span><span style="font-size:12px;color:var(--t3)">vs last month</span></div>
+      ${groups}
+    </div>
+    <div class="row" style="gap:12px;padding:12px 14px;border-radius:14px;background:rgba(245,180,60,0.12)">
+      <div class="col" style="flex:1;gap:2px"><span style="font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--amber)">WORK ON NEXT</span><span style="font-size:14px">Resets and third-shot drops</span></div>
+      <button class="btn" type="button" style="background:var(--amber);color:var(--bg)">Drill plan</button>
+    </div>
+  </div>`;
+}
+
+function spider(axes, you, them, cx, cy, R, w, h, youFirst) {
+  const n = axes.length;
+  const ang = i => (-90 + i * 360 / n) * Math.PI / 180;
+  const pt = (i, v) => { const a = ang(i), d = R * v / 100; return (cx + d * Math.cos(a)).toFixed(1) + ',' + (cy + d * Math.sin(a)).toFixed(1); };
+  const poly = vals => vals.map((v, i) => pt(i, v)).join(' ');
+  const ring = v => poly(axes.map(() => v));
+  const spokes = axes.map((_, i) => 'M' + cx + ' ' + cy + 'L' + pt(i, 100).replace(',', ' ')).join('');
+  const labels = axes.map((name, i) => {
+    const a = ang(i), c = Math.cos(a), s = Math.sin(a);
+    const tx = c > 0.3 ? '0' : (c < -0.3 ? '-100%' : '-50%');
+    return `<span style="left:${(cx + (R + 10) * c).toFixed(0)}px;top:${(cy + (R + 12) * s).toFixed(0)}px;transform:translate(${tx},-50%)">${name}</span>`;
+  }).join('');
+  const youP = `<polygon points="${poly(you)}" fill="rgba(215,242,92,${youFirst ? 0.18 : 0.22})" stroke="#D7F25C" stroke-width="2"/>`;
+  const themP = `<polygon points="${poly(them)}" fill="rgba(92,168,255,0.22)" stroke="#5CA8FF" stroke-width="2"/>`;
+  return `<div class="spider" style="height:${h}px"><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="Spider chart comparing shot skills">
+    <polygon points="${ring(25)}" fill="none" stroke="#22302A"/><polygon points="${ring(50)}" fill="none" stroke="#22302A"/>
+    <polygon points="${ring(75)}" fill="none" stroke="#22302A"/><polygon points="${ring(100)}" fill="none" stroke="#3A4A43"/>
+    <path d="${spokes}" stroke="#22302A" fill="none"/>${youFirst ? youP + themP : themP + youP}</svg>${labels}</div>`;
+}
+
+const legend = name => `<div class="row" style="gap:12px;font-size:12px">
+  <span class="row" style="gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:var(--lime)"></span>You</span>
+  <span class="row" style="gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:var(--blue)"></span>${name}</span></div>`;
+
+const PLAYERS = [
+  { name: 'Maya', initial: 'M', bg: '#5A4A7A', dupr: '3.91', vexo: '4.02', note: 'Best at: dinks · Weakest: lob', href: '#players', up: true },
+  { name: 'Sean', initial: 'S', bg: '#2F6B57', dupr: '3.55', vexo: '3.38', note: 'Best at: drops · Weakest: backhand', href: '#profile/sean', up: false },
+  { name: 'You', initial: 'Y', bg: '#4A5A2A', dupr: '3.42', vexo: '3.61', note: 'Best at: forehand · Weakest: resets', href: '#me', up: true },
+  { name: 'Partner', initial: 'P', bg: '#7A5A2A', dupr: '3.30', vexo: '3.47', note: 'Best at: serve · Weakest: kitchen arrival', href: '#players', up: true },
+];
+
+function screenPlayers() {
+  const chart = spider(['Serve 72 · 68', 'Forehand 74 · 70', 'Backhand 49 · 46', 'Third-shot drop 41 · 63', 'Reset / dig 38 · 55', 'Dink 57 · 71'],
+    [72, 74, 49, 41, 38, 57], [68, 70, 46, 63, 55, 71], 161, 105, 72, 322, 210, false);
+  const rows = PLAYERS.map(p => `<a class="prow" href="${p.href}">
+    <span class="av" style="background:${p.bg}">${p.initial}</span>
+    <span class="col" style="gap:2px;min-width:0"><span style="font-size:15px;font-weight:600">${p.name}</span><span style="font-size:12px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.note}</span></span>
+    <span class="num">${p.dupr}</span><span class="num" style="color:${p.up ? COLOR.green : '#FF8A8A'}">${p.vexo}</span></a>`).join('');
+  return `<div class="screen tight">
+    <div class="col" style="gap:2px"><span class="sub">People you've played<span class="sample">SAMPLE</span></span><h1 class="h" style="font-size:24px">Players</h1></div>
+    <div class="card col" style="gap:10px;padding:14px">
+      <div class="row between"><span style="font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--t3)">YOU VS SEAN</span>${legend('Sean')}</div>
+      ${chart}
+      <span style="font-size:13px;color:var(--t2);line-height:1.4">Your forehand beats his backhand by 28 points. Drive cross-court to his left.</span>
+    </div>
+    <div class="col" style="gap:8px">
+      <div style="display:grid;grid-template-columns:1fr 52px 52px;gap:8px;padding:0 14px;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--t3)"><span>PLAYER</span><span style="text-align:right">DUPR</span><span style="text-align:right">VEXO</span></div>
+      ${rows}
+      <span style="font-size:12px;color:var(--t4);padding:0 14px">Vexo shows shot stats only for players who've opted in.</span>
+    </div>
+  </div>`;
+}
+
+function screenRecap() {
+  const s = sessionStats();
+  const youOnTime = s ? s.onTime + '%' : '[%]';
+  return `<div class="screen">
+    <div class="col" style="gap:2px"><span class="sub">Doubles vs Sean + Maya<span class="sample">SAMPLE</span></span><h1 class="h">Won 11–9</h1></div>
+    <div class="col" style="gap:6px;padding:16px;border-radius:16px;background:rgba(92,168,255,0.12);border:2px solid var(--blue)">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.08em;color:#9FB4FF">THE CUE THAT WON IT</span>
+      <span class="h" style="font-size:20px">Go at Sean's backhand</span>
+      <span style="font-size:14px;color:var(--t2)">Called [N] times · you won [N] of those points</span>
+    </div>
+    <div class="col" style="gap:8px">
+      <span class="label">Team</span>
+      <div class="card col" style="border-radius:14px">
+        <div class="trow" style="padding:10px 14px;font-size:12px;color:var(--t3)"><span></span><span style="font-weight:400">You</span><span style="font-weight:400">Partner</span></div>
+        <div class="trow"><span>Middle balls</span><span>[N]</span><span>[N]</span></div>
+        <div class="trow"><span>Errors</span><span>[N]</span><span>[N]</span></div>
+        <div class="trow"><span>On-time contact</span><span style="color:${s ? (s.onTime >= 60 ? COLOR.green : COLOR.amber) : 'inherit'}">${youOnTime}${s ? '<span class="live-tag" style="margin-left:4px">LIVE</span>' : ''}</span><span>[%]</span></div>
+      </div>
+      <span style="font-size:13px;color:var(--t2)">Split up (one up, one back) on [N] points. Get to the kitchen together.</span>
+    </div>
+    <div class="col" style="gap:8px">
+      <span class="label">People you played</span>
+      <a href="#profile/sean" class="row" style="gap:12px;padding:12px 14px;min-height:44px;border-radius:14px;background:var(--card);color:#fff;text-decoration:none">
+        <span class="av" style="background:#2F6B57">S</span>
+        <span class="col" style="flex:1;gap:2px"><span style="font-size:15px;font-weight:600">Sean</span><span style="font-size:12px;color:var(--t3)">Profile updated · backhand still weak</span></span>${ICON.chev}
+      </a>
+      <div class="row" style="gap:12px;padding:12px 14px;border-radius:14px;background:var(--card)">
+        <span class="av" style="background:#5A4A7A">M</span>
+        <span class="col" style="flex:1;gap:2px"><span style="font-size:15px;font-weight:600">Maya</span><span style="font-size:12px;color:var(--t3)">New · strong at the kitchen</span></span>
+        <button type="button" aria-label="Add a voice note about Maya" style="width:44px;height:44px;border:0;border-radius:22px;background:var(--lime);color:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer">${ICON.mic}</button>
+      </div>
+      <span style="font-size:13px;color:var(--t2)">Chatted with Maya after? Tap the mic and say what you learned.</span>
+    </div>
+  </div>`;
+}
+
+const OFF_COURT = [
+  ['Works on', 'Building dev tools at [COMPANY]', 'Shared by Sean'],
+  ['New to SF', 'Moved from NYC this year', 'Your note · Nov 2'],
+  ['Into', 'Climbing, trying the city’s coffee spots', 'Your note · Nov 9'],
+  ['Usually plays', 'Tue and Thu evenings', 'From his match history'],
+  ['Last talked about', 'His team is hiring a designer', 'Your note · Nov 9'],
+  ['Ask him about', 'How the climbing trip went', 'Suggested from your notes'],
+];
+
+function screenProfile(name) {
+  if (name !== 'sean') {
+    return `<div class="screen"><a href="#players" style="display:flex;width:44px;height:44px;border-radius:22px;background:var(--card);align-items:center;justify-content:center;color:#fff">${ICON.back}</a>
+      <h1 class="h">${esc(name.charAt(0).toUpperCase() + name.slice(1))}</h1><span class="sub">No profile yet. Play a match together to build one.</span></div>`;
+  }
+  const chart = spider(['Serve', 'Forehand', 'Backhand', 'Slice', 'Third-shot drop', 'Reset / dig', 'Volley', 'Dink'],
+    [72, 74, 49, 52, 41, 38, 61, 57], [68, 70, 46, 58, 63, 55, 60, 71], 161, 125, 82, 322, 250, true);
+  const tile = (k, v) => `<div class="col" style="gap:2px;padding:12px;border-radius:12px;background:var(--card)"><span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--t3)">${k}</span><span class="h" style="font-size:22px">${v}</span></div>`;
+  return `<div>
+    <div style="position:relative;height:320px;background:#2F6B57;overflow:hidden">
+      <svg width="100%" height="320" viewBox="0 0 390 320" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Photo placeholder for Sean" style="position:absolute;inset:0"><circle cx="195" cy="130" r="58" fill="#3E8069"/><path d="M85 320c0-70 50-112 110-112s110 42 110 112z" fill="#3E8069"/></svg>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:120px;background:rgba(14,20,17,0.55)"></div>
+      <a href="#players" aria-label="Back to players" style="position:absolute;left:16px;top:52px;width:44px;height:44px;border-radius:22px;background:rgba(14,20,17,0.6);display:flex;align-items:center;justify-content:center;color:#fff">${ICON.back}</a>
+      <span style="position:absolute;right:16px;top:62px;padding:4px 8px;border-radius:6px;background:rgba(14,20,17,0.6);font-size:11px;color:var(--t2)">[PHOTO] · SAMPLE</span>
+      <div class="row between" style="position:absolute;left:20px;right:20px;bottom:18px;align-items:flex-end">
+        <div class="col" style="gap:4px"><h1 class="h" style="font-size:32px">Sean</h1><span style="font-size:13px;color:var(--t2)">Right-handed · likes the left side</span></div>
+        <span style="padding:4px 8px;border-radius:6px;background:rgba(91,214,138,0.2);color:#8BE3AE;font-size:12px;font-weight:600">Opted in</span>
+      </div>
+    </div>
+    <div class="col" style="gap:18px;padding:18px 20px 24px">
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">${tile('DUPR', '3.55')}${tile('VEXO', '3.38')}${tile('YOU VS SEAN', '1–2')}</div>
+      <div class="col" style="gap:8px;padding:16px;border-radius:16px;background:rgba(215,242,92,0.10);border:2px solid var(--lime)">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--lime)">BEFORE TONIGHT'S REMATCH</span>
+        <span style="font-size:16px;line-height:1.45">Attack his backhand and lob when he rushes the net. Ask how the climbing trip went.</span>
+        <button class="btn" type="button" style="align-self:flex-start;display:flex;align-items:center;gap:8px;background:var(--lime);color:var(--bg)">${ICON.speaker}Play in my glasses</button>
+      </div>
+      <div class="card col" style="gap:10px;padding:14px">
+        <div class="row between"><span style="font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--t3)">SHOT SKILLS VS YOU</span>${legend('Sean')}</div>
+        ${chart}
+        <span style="font-size:13px;color:var(--t2);line-height:1.4">He's stronger in the soft game (drops, dinks, resets). You win the drive battle, so keep the ball fast and low.</span>
+      </div>
+      <div class="col" style="gap:8px">
+        <span class="label">On the court · from glasses + bands</span>
+        <div class="card col" style="border-radius:14px">
+          <div class="kv"><span style="font-size:15px">Backhand</span><span style="font-size:14px;color:#9FB4FF;font-weight:600">Weak · attack it</span></div>
+          <div class="kv"><span style="font-size:15px">After serving</span><span style="font-size:14px;color:#9FB4FF;font-weight:600">Rushes the net · lob</span></div>
+          <div class="kv"><span style="font-size:15px">Serve</span><span style="font-size:14px;color:var(--t2)">Deep, to your backhand</span></div>
+          <div class="kv"><span style="font-size:15px">Dinks</span><span style="font-size:14px;color:var(--t2)">Patient, mostly crosscourt</span></div>
+        </div>
+      </div>
+      <div class="col" style="gap:8px">
+        <span class="label">Off the court</span>
+        <div class="card col" style="border-radius:14px">${OFF_COURT.map(([l, v, s], i) => `<div style="display:grid;grid-template-columns:104px 1fr;gap:10px;padding:12px 14px;${i < OFF_COURT.length - 1 ? 'border-bottom:1px solid var(--line)' : ''}"><span style="font-size:13px;color:var(--t3)">${l}</span><span class="col" style="gap:2px"><span style="font-size:14px">${v}</span><span style="font-size:11px;color:var(--t4)">${s}</span></span></div>`).join('')}</div>
+        <div class="row" style="gap:10px;padding:12px 14px;border-radius:14px;background:rgba(245,180,60,0.12)">${ICON.star}<span style="font-size:14px">In common: you both build developer tools</span></div>
+      </div>
+      <div class="col" style="gap:8px">
+        <span class="label">Matches together</span>
+        <div class="card col" style="border-radius:14px">
+          <div class="kv"><span class="col" style="gap:2px"><span style="font-size:14px">Nov 14 · vs Sean + Maya</span><span style="font-size:12px;color:var(--t3)">Attacked his backhand</span></span><span style="font-weight:700;color:var(--green)">W 11–9</span></div>
+          <div class="kv"><span class="col" style="gap:2px"><span style="font-size:14px">Nov 9 · vs Sean + Maya</span><span style="font-size:12px;color:var(--t3)">Lost the kitchen battle</span></span><span style="font-weight:700;color:#FF8A8A">L 7–11</span></div>
+          <div class="kv"><span class="col" style="gap:2px"><span style="font-size:14px">Nov 2 · first game</span><span style="font-size:12px;color:var(--t3)">"Good game" and no text back</span></span><span style="font-weight:700;color:#FF8A8A">L 3–11</span></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+        <button type="button" style="min-height:52px;border:0;border-radius:14px;background:var(--lime);color:var(--bg);font:600 15px Inter,sans-serif;cursor:pointer">Invite to play</button>
+        <button type="button" style="display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border:1px solid var(--line2);border-radius:14px;background:var(--card);color:#fff;font:600 15px Inter,sans-serif;cursor:pointer">${ICON.mic.replace(/20/g, '18')}Voice note</button>
+      </div>
+      <span style="font-size:12px;color:var(--t4);line-height:1.4">On-court stats come from matches you played together. Off-court details come from your own notes or what Sean chose to share. Sample data.</span>
+    </div>
+  </div>`;
+}
+
+// ---------------------------------------------------------------- routing
+
+const TABS = [['live', 'Live'], ['me', 'Me'], ['players', 'Players'], ['recap', 'Recap']];
+
+function route() {
+  const h = location.hash.replace(/^#/, '') || 'live';
+  const [name, arg] = h.split('/');
+  if (name === 'profile') return { tab: 'players', html: () => screenProfile((arg || 'sean').toLowerCase()) };
+  const screens = { live: screenLive, me: screenMe, players: screenPlayers, recap: screenRecap };
+  return { tab: screens[name] ? name : 'live', html: screens[name] || screenLive };
+}
+
+let lastHash = null;
+function render() {
+  const r = route();
+  const main = document.getElementById('main');
+  const top = main.scrollTop;
+  main.innerHTML = r.html();
+  if (lastHash === location.hash) main.scrollTop = top; else main.scrollTop = 0;
+  lastHash = location.hash;
+  document.getElementById('tabs').innerHTML = TABS.map(([k, label]) =>
+    `<a href="#${k}" class="${k === r.tab ? 'on' : ''}"${k === r.tab ? ' aria-current="page"' : ''}>${ICON[k]}${label}</a>`).join('');
+}
+
+window.addEventListener('hashchange', render);
+
+// ---------------------------------------------------------------- live data
+
+let replayTimer = null;
+function connect() {
+  const es = new EventSource('/events');
+  es.onopen = () => { state.connected = true; state.swings = []; render(); };
+  es.onerror = () => { state.connected = false; render(); };
+  es.onmessage = e => {
+    const ev = JSON.parse(e.data);
+    if (ev.type === 'status') {
+      state.status = ev;
+    } else if (ev.type === 'swing') {
+      if (state.swings.some(s => s.n === ev.n)) return;
+      state.swings.push(ev);
+      state.freshN = ev.replay ? null : ev.n;
+      if (!ev.replay) setTimeout(() => { if (state.freshN === ev.n) state.freshN = null; }, 700);
+    }
+    // Replay arrives as a burst; render once after it settles instead of per event.
+    clearTimeout(replayTimer);
+    if (ev.replay) replayTimer = setTimeout(render, 30); else render();
+  };
+}
+
+render();
+connect();
+</script>
+</body>
+</html>

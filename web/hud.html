@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vexo glasses HUD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --cue: #5BD68A; --panel: rgba(14,20,17,0.82); --dim: #B9C7C0; --soft: #D2DCD6; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #0E1411; color: #fff; font-family: Inter, system-ui, sans-serif; overflow: hidden; }
+  .grotesk { font-family: 'Space Grotesk', Inter, sans-serif; }
+
+  .stage { position: relative; width: min(100vw, calc(100vh * 16 / 9)); aspect-ratio: 16 / 9; margin: 0 auto; top: 50%; transform: translateY(-50%); overflow: hidden; background: #16241E; }
+  .stage video { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #backdrop { object-fit: cover; filter: blur(28px) brightness(0.55); transform: scale(1.1); }
+  #video { object-fit: contain; }
+  .edge { position: absolute; inset: 0; pointer-events: none; opacity: 0; box-shadow: inset 0 0 0 4px var(--cue), inset 0 0 90px var(--cue); transition: opacity 0.6s; }
+  .edge.on { opacity: 0.5; transition: opacity 0.05s; }
+
+  .panel { position: absolute; background: var(--panel); border-radius: 12px; }
+  .dot { width: 10px; height: 10px; border-radius: 5px; flex-shrink: 0; }
+
+  .brand { left: 2.5%; top: 3.9%; display: flex; align-items: center; gap: 12px; padding: 10px 14px; }
+  .brand b { letter-spacing: 0.08em; }
+  .brand span { color: var(--dim); font-size: 14px; }
+
+  .cue { left: 50%; top: 3.9%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; padding: 12px 20px 12px 12px; border-radius: 14px; border: 2px solid var(--cue); transition: opacity 0.4s; }
+  .cue .tag { padding: 6px 10px; border-radius: 8px; background: var(--cue); color: #0E1411; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; }
+  .cue .line { font-size: 28px; font-weight: 700; white-space: nowrap; }
+  .cue.stale { opacity: 0.55; }
+  .why { position: absolute; left: 50%; top: 13.3%; transform: translateX(-50%); color: var(--soft); font-size: 14px; padding: 4px 10px; border-radius: 6px; background: rgba(14,20,17,0.7); white-space: nowrap; }
+
+  .links { right: 2.5%; top: 3.9%; display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; font-size: 13px; color: var(--soft); }
+  .links div { display: flex; align-items: center; gap: 8px; }
+  .links .dot { width: 8px; height: 8px; }
+
+  .swing { left: 2.5%; bottom: 3.9%; width: 300px; display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 14px; }
+  .label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; color: var(--dim); }
+  .bar { position: relative; height: 8px; border-radius: 4px; background: #2A3A33; }
+  .bar .ok { position: absolute; left: 33%; width: 34%; top: 0; bottom: 0; background: rgba(91,214,138,0.35); border-radius: 4px; }
+  .bar .mark { position: absolute; top: -5px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: #fff; transition: left 0.3s; }
+  .scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--dim); }
+  .nums { display: flex; gap: 24px; }
+  .nums div { display: flex; flex-direction: column; }
+  .nums b { font-size: 24px; font-weight: 700; }
+  .nums small { font-size: 12px; color: var(--dim); }
+
+  .light { right: 2.5%; bottom: 3.9%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; }
+  .light .orb { width: 28px; height: 28px; border-radius: 14px; background: #3A4A43; transition: background 0.2s, box-shadow 0.2s; }
+  .light div { display: flex; flex-direction: column; }
+  .light strong { font-size: 15px; font-weight: 600; }
+
+  .controls { position: fixed; left: 12px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: rgba(14,20,17,0.9); border: 1px solid #22302A; font-size: 12px; z-index: 5; max-width: 220px; }
+  [hidden] { display: none !important; }
+  .controls button, .controls select { font: inherit; color: #fff; background: #18221D; border: 1px solid #22302A; border-radius: 10px; padding: 8px 10px; min-height: 36px; cursor: pointer; }
+  .controls label { color: var(--dim); }
+  .controls a { color: #D7F25C; }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Glasses view">
+  <video id="backdrop" src="media/pov-6440.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
+  <video id="video" src="media/pov-6440.mp4" autoplay muted loop playsinline></video>
+  <div class="edge" id="edge"></div>
+
+  <div class="panel brand">
+    <span class="dot" style="background: #FF5D5D"></span>
+    <b class="grotesk">VEXO</b>
+    <span id="session">Waiting for the band</span>
+  </div>
+
+  <div class="panel cue" id="cue" aria-live="polite" hidden>
+    <span class="tag" id="tag"></span>
+    <span class="line grotesk" id="line"></span>
+  </div>
+  <div class="why" id="why" hidden></div>
+
+  <div class="panel links">
+    <div><span class="dot" id="glassesDot" style="background: #3A4A43"></span><span id="glassesText">Glasses · clip</span></div>
+    <div><span class="dot" id="bandDot" style="background: #3A4A43"></span><span id="bandText">Your band</span></div>
+    <div><span class="dot" style="background: #3A4A43"></span><span>Partner band · not paired</span></div>
+  </div>
+
+  <div class="panel swing">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <span class="label">LAST SWING · BAND</span>
+      <span id="verdict" style="font-size: 13px; font-weight: 600; color: var(--dim)">Swing to start</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div class="bar"><div class="ok"></div><div class="mark" id="mark" style="left: 50%; opacity: 0"></div></div>
+      <div class="scale"><span>Early</span><span>On time</span><span>Late</span></div>
+    </div>
+    <div class="nums">
+      <div><b class="grotesk" id="speed">–</b><small>wrist speed</small></div>
+      <div><b class="grotesk" id="contact">–</b><small>contact point</small></div>
+    </div>
+  </div>
+
+  <div class="panel light">
+    <span class="orb" id="orb"></span>
+    <div><span class="label">BAND LIGHT</span><strong id="lightText">Idle</strong></div>
+  </div>
+</main>
+
+<aside class="controls" id="controls">
+  <label for="source">Video (H hides this)</label>
+  <select id="source">
+    <option value="clip:media/pov-6440.mp4">Clip · IMG_6440</option>
+    <option value="clip:media/pov-6432.mp4">Clip · IMG_6432</option>
+    <option value="screen">Glasses · share the call window</option>
+    <option value="camera">Camera</option>
+  </select>
+  <span id="sourceError" role="alert" style="color: #FF8A8A"></span>
+  <div id="simButtons" hidden style="display: flex; flex-direction: column; gap: 8px">
+    <label>Pretend swing (keys 1 2 3)</label>
+    <button type="button" data-sim="good">1 · Good</button>
+    <button type="button" data-sim="late">2 · Late</button>
+    <button type="button" data-sim="slow">3 · Slow</button>
+  </div>
+  <a href="/app/">Phone app</a>
+  <a href="/">Glass overlay</a>
+</aside>
+
+<script>
+const LATE_MS = 15;   // matches coach.py
+const KINDS = {
+  late: { tag: 'FIX', color: '#F5B43C', light: 'Amber · fix cue', verdict: 'Late', why: (s) => `Contact ${Math.round(s.impact_vs_peak_ms)} ms after peak speed` },
+  short: { tag: 'FIX', color: '#F5B43C', light: 'Amber · fix cue', verdict: 'Short', why: (s) => `Follow-through ${Math.round(s.follow_ms)} ms` },
+  slow: { tag: 'FIX', color: '#F5B43C', light: 'Amber · fix cue', verdict: 'Slow', why: (s) => `Wrist speed ${Math.round(s.peak_gyro).toLocaleString()}°/s` },
+  good: { tag: 'GOOD SHOT', color: '#5BD68A', light: 'Green · good shot', verdict: 'Clean', why: (s) => `Contact at peak speed · ${Math.round(s.peak_gyro).toLocaleString()}°/s` },
+};
+const $ = (id) => document.getElementById(id);
+let staleTimer, edgeTimer, lightTimer, count = 0, good = 0;
+
+function onStatus(e) {
+  $('bandDot').style.background = '#5BD68A';
+  $('bandText').textContent = `Your band · ${e.rate}/s`;
+  $('simButtons').hidden = !e.sim;
+}
+
+function onSwing(e) {
+  const k = KINDS[e.cue] || KINDS.good;
+  const s = e.swing;
+  count += 1;
+  if (e.cue === 'good') good += 1;
+  $('session').textContent = `Swing ${count} · ${Math.round((good / count) * 100)}% on time`;
+  if (e.replay) return;
+
+  document.documentElement.style.setProperty('--cue', k.color);
+  $('cue').hidden = false;
+  $('cue').classList.remove('stale');
+  $('tag').textContent = k.tag;
+  $('line').textContent = e.line;
+  $('why').hidden = false;
+  $('why').textContent = k.why(s);
+
+  $('verdict').textContent = k.verdict;
+  $('verdict').style.color = k.color;
+  // The green zone (33–67%) is the on-time window, -40 ms .. LATE_MS; outside it the bar runs 100 ms each way.
+  const ms = s.impact_vs_peak_ms;
+  const pos = Math.max(2, Math.min(98, ms > LATE_MS ? 67 + ((ms - LATE_MS) / 100) * 31
+    : ms < -40 ? 33 - ((-40 - ms) / 100) * 31
+    : 33 + ((ms + 40) / (LATE_MS + 40)) * 34));
+  $('mark').style.left = `${pos}%`;
+  $('mark').style.opacity = 1;
+  $('speed').textContent = `${Math.round(s.peak_gyro).toLocaleString()}°/s`;
+  $('contact').textContent = s.impact_vs_peak_ms > LATE_MS ? 'Late' : s.impact_vs_peak_ms < -40 ? 'Early' : 'Out front';
+
+  $('orb').style.background = k.color;
+  $('orb').style.boxShadow = `0 0 0 6px ${k.color}40`;
+  $('lightText').textContent = k.light;
+
+  $('edge').classList.add('on');
+  clearTimeout(edgeTimer); edgeTimer = setTimeout(() => $('edge').classList.remove('on'), 250);
+  clearTimeout(lightTimer); lightTimer = setTimeout(() => { $('orb').style.background = ''; $('orb').style.boxShadow = ''; $('lightText').textContent = 'Idle'; }, 600);
+  clearTimeout(staleTimer); staleTimer = setTimeout(() => $('cue').classList.add('stale'), 4000);
+}
+
+const source = new EventSource('/events');
+source.onmessage = (m) => {
+  const e = JSON.parse(m.data);
+  if (e.type === 'status') onStatus(e);
+  else if (e.type === 'swing') onSwing(e);
+};
+source.onerror = () => { $('bandDot').style.background = '#FF5D5D'; $('bandText').textContent = 'Coach offline'; };
+source.onopen = () => { count = 0; good = 0; };
+
+const sim = (kind) => fetch(`/sim/${kind}`, { method: 'POST' });
+document.querySelectorAll('[data-sim]').forEach((b) => b.addEventListener('click', () => sim(b.dataset.sim)));
+document.addEventListener('keydown', (k) => {
+  const kind = { 1: 'good', 2: 'late', 3: 'slow' }[k.key];
+  if (kind && !$('simButtons').hidden) sim(kind);
+  if (k.key === 'h' || k.key === 'H') $('controls').hidden = !$('controls').hidden;
+});
+
+// The glasses' feed: a recorded clip, the call window the glasses are streaming to, or a camera.
+async function useSource(value) {
+  const videos = [$('video'), $('backdrop')];
+  $('sourceError').textContent = '';
+  const old = videos[0].srcObject;
+  try {
+    if (value.startsWith('clip:')) {
+      for (const v of videos) { v.srcObject = null; v.src = value.slice(5); }
+      $('glassesText').textContent = 'Glasses · clip';
+      $('glassesDot').style.background = '#3A4A43';
+    } else {
+      const stream = value === 'screen'
+        ? await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 30 }, audio: false })
+        : await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 }, audio: false });
+      for (const v of videos) { v.removeAttribute('src'); v.srcObject = stream; }
+      $('glassesText').textContent = value === 'screen' ? 'Glasses · live' : 'Camera · live';
+      $('glassesDot').style.background = '#5BD68A';
+      stream.getVideoTracks()[0].addEventListener('ended', () => { $('source').value = 'clip:media/pov-6440.mp4'; useSource($('source').value); });
+    }
+    await Promise.all(videos.map((v) => v.play()));
+    if (old) old.getTracks().forEach((t) => t.stop());
+  } catch (err) {
+    $('sourceError').textContent = `Couldn't start that video: ${err.message}`;
+  }
+}
+$('source').addEventListener('change', (ev) => useSource(ev.target.value));
+</script>
+</body>
+</html>

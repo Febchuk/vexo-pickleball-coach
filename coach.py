@@ -3,7 +3,7 @@
     python3 coach.py            band 56 over Bluetooth
     python3 coach.py --usb      over the cable
     python3 coach.py --sim      pretend band; swing from the page's buttons or the keyboard
-    add --mute to skip the spoken cues
+    add --mute to skip the spoken cues, --port N to serve on another port
 
 Then open http://127.0.0.1:8765 (the overlay over a POV clip).
 """
@@ -57,23 +57,32 @@ def judge(s: swing.Swing) -> Cue:
 # Events out to every open overlay page, as server-sent events.
 
 class Hub:
+    """Fans events out to every open page. A page that opens late first gets the status and
+    this session's swings again, marked "replay", so it can rebuild its history without
+    animating or speaking them."""
+
     def __init__(self):
         self.clients: list[queue.Queue] = []
         self.lock = threading.Lock()
         self.last_status = None
+        self.swings: list[dict] = []
 
     def publish(self, event: dict):
-        if event["type"] == "status":
-            self.last_status = event
         with self.lock:
+            if event["type"] == "status":
+                self.last_status = event
+            elif event["type"] == "swing":
+                self.swings.append(event)
             for q in self.clients:
                 q.put(event)
 
     def subscribe(self) -> queue.Queue:
         q = queue.Queue()
-        if self.last_status:
-            q.put(self.last_status)
         with self.lock:
+            if self.last_status:
+                q.put(self.last_status)
+            for event in self.swings:
+                q.put({**event, "replay": True})
             self.clients.append(q)
         return q
 
@@ -163,9 +172,10 @@ def set_led(band, color, brightness=1.0):
 
 
 def main(argv):
-    server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    port = int(argv[argv.index("--port") + 1]) if "--port" in argv else PORT
+    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
-    print(f"Overlay at http://127.0.0.1:{PORT}")
+    print(f"Overlay at http://127.0.0.1:{port}")
 
     while True:
         try:
