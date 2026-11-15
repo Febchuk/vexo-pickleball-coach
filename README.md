@@ -2,6 +2,8 @@
 
 Real-time pickleball coaching from a Vexo motion band (swing feedback by light and voice) and Meta glasses (POV video). Built at VexoHacks @ YC, Nov 14 2026.
 
+This repo is the hackathon prototype. The system we plan to build next (native phone app, on-band swing detection, a streaming cloud pipeline, and a rules-plus-Claude tactics engine) is in [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## Run it
 
 ```sh
