@@ -12,10 +12,18 @@
   html, body { margin: 0; height: 100%; background: #0E1411; color: #fff; font-family: Outfit, system-ui, sans-serif; overflow: hidden; }
   .grotesk { font-family: Outfit, sans-serif; letter-spacing: -0.01em; }
 
-  .stage { position: relative; width: min(100vw, calc(100vh * 16 / 9)); aspect-ratio: 16 / 9; margin: 0 auto; top: 50%; transform: translateY(-50%); overflow: hidden; background: #3E8A6A; }
-  .stage video { position: absolute; inset: 0; width: 100%; height: 100%; }
-  #backdrop { object-fit: cover; filter: blur(28px) brightness(0.55); transform: scale(1.1); }
-  #video { object-fit: contain; }
+  /* The stage takes the video's own shape (set from the feed), so every panel sits on the footage.
+     The blurred copy only fills the page around it. */
+  #backdrop { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(28px) brightness(0.55); transform: scale(1.1); }
+  .stage { --ar: 16 / 9; position: relative; height: min(100vh, calc(100vw / (var(--ar)))); aspect-ratio: var(--ar); margin: 0 auto; top: 50%; transform: translateY(-50%); overflow: hidden; background: #3E8A6A; }
+  #video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  /* A portrait feed is too narrow for the top row, so the cue drops below it. */
+  .stage.tall .brand, .stage.tall .links { top: 2.5%; }
+  .stage.tall .cue { top: 17%; left: 4%; right: 4%; transform: none; justify-content: center; }
+  .stage.tall .cue .line { font-size: 24px; }
+  .stage.tall .why { top: 26%; }
+  .stage.tall .swing { width: 56%; }
   .edge { position: absolute; inset: 0; pointer-events: none; opacity: 0; box-shadow: inset 0 0 0 4px var(--cue), inset 0 0 90px var(--cue); transition: opacity 0.6s; }
   .edge.on { opacity: 0.5; transition: opacity 0.05s; }
 
@@ -60,8 +68,8 @@
 </style>
 </head>
 <body>
-<main class="stage" aria-label="Glasses view">
-  <video id="backdrop" src="media/pov-6440.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
+<video id="backdrop" src="media/pov-6440.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
+<main class="stage" id="stage" aria-label="Glasses view">
   <video id="video" src="media/pov-6440.mp4" autoplay muted loop playsinline></video>
   <div class="edge" id="edge"></div>
 
@@ -221,6 +229,16 @@ async function useSource(value) {
   }
 }
 $('source').addEventListener('change', (ev) => useSource(ev.target.value));
+
+function fitStage() {
+  const v = $('video');
+  if (!v.videoWidth) return;
+  $('stage').style.setProperty('--ar', `${v.videoWidth} / ${v.videoHeight}`);
+  $('stage').classList.toggle('tall', v.videoWidth / v.videoHeight < 1.2);
+}
+$('video').addEventListener('loadedmetadata', fitStage);
+$('video').addEventListener('resize', fitStage);
+fitStage();
 </script>
 </body>
 </html>
