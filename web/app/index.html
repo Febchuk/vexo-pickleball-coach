@@ -69,6 +69,14 @@ nav.tabs a.on{color:#0A0E0C;background:var(--lime);font-weight:600}
 .spider{position:relative;width:322px;align-self:center}
 .spider svg{position:absolute;inset:0}
 .spider span{position:absolute;font-size:11px;color:var(--t2);white-space:nowrap}
+/* Idle motion for the ray-traced players: a bob and a slight sway, staggered so they never move in step. */
+[style*="url(avatars/"]{background-size:122%!important;animation:avatar-bob 2.8s ease-in-out infinite}
+a:nth-child(3n) [style*="url(avatars/"],a:nth-child(3n) + * [style*="url(avatars/"]{animation-duration:3.3s;animation-delay:-1.1s}
+a:nth-child(3n+1) [style*="url(avatars/"]{animation-duration:2.5s;animation-delay:-0.6s}
+@keyframes avatar-bob{0%,100%{background-position:50% 30%}50%{background-position:52% 0%}}
+img[src^="avatars/"]{animation:avatar-idle 3.2s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes avatar-idle{0%,100%{transform:translateX(-58%) translateY(0) rotate(-1.2deg) scaleY(1)}50%{transform:translateX(-58%) translateY(-12px) rotate(1.2deg) scaleY(1.015)}}
+@media (prefers-reduced-motion:reduce){[style*="url(avatars/"],img[src^="avatars/"]{animation:none}}
 </style>
 </head>
 <body>
