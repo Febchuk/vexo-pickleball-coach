@@ -84,6 +84,7 @@ img[src^="avatars/"]{animation:avatar-idle 3.2s ease-in-out infinite;transform-o
   <main id="main"></main>
   <nav class="tabs" id="tabs" aria-label="Main"></nav>
 </div>
+<script src="/events.js"></script>
 <script>
 const COLOR = { amber: '#F5B43C', green: '#5BD68A', blue: '#5CA8FF', lime: '#D7F25C' };
 
@@ -477,7 +478,7 @@ window.addEventListener('hashchange', render);
 
 let replayTimer = null;
 function connect() {
-  const es = new EventSource('/events');
+  const es = openEvents();
   es.onopen = () => { state.connected = true; state.swings = []; render(); };
   es.onerror = () => { state.connected = false; render(); };
   es.onmessage = e => {

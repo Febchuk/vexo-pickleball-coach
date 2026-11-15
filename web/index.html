@@ -111,6 +111,7 @@
   </div>
 </aside>
 
+<script src="/events.js"></script>
 <script>
 const LATE_MS = 15;             // matches coach.py
 const $ = (id) => document.getElementById(id);
@@ -168,7 +169,7 @@ function onSwing(e) {
   }));
 }
 
-const source = new EventSource('/events');
+const source = openEvents();
 source.onmessage = (m) => {
   const e = JSON.parse(m.data);
   if (e.type === 'status') onStatus(e);
