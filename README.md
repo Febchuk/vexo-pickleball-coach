@@ -36,6 +36,7 @@ The glasses view and the glass overlay plays a POV clip, or the glasses' live fe
 | `web/index.html` | The glass overlay page. |
 | `demo/` | Renders the demo video from recorded clips: `demo/render.sh`. |
 | `ui/` | Avatar sprites, ray-traced with the engine from Nomen (`ui/engine/`). `npx -y tsx ui/bake.ts`. |
+| `web/app/avatars/` | The app's player avatars, from [DiceBear](https://www.dicebear.com) (Avataaars style by Pablo Stanley, free for personal and commercial use). `ui/avatars.ts` would overwrite them with ray-traced ones. |
 | `vexo-open-kit/` | The Vexo kit, as a git submodule. Don't edit it. |
 
 Keys never go in the repo: use environment variables or `.env` (ignored).
