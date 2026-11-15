@@ -65,6 +65,29 @@
   .controls button, .controls select { font: inherit; color: #fff; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 8px 10px; min-height: 36px; cursor: pointer; }
   .controls label { color: var(--dim); }
   .controls a { color: #D7F25C; }
+
+  /* Who you're talking to: a pre-loaded profile, shown with P. */
+  .stage.profile .swing, .stage.profile .light, .stage.profile .cue, .stage.profile .why { display: none !important; }
+  .person { left: 4%; right: 4%; bottom: 3%; padding: 18px 20px; border-radius: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .person .row { display: flex; align-items: center; gap: 14px; }
+  .person .av { width: 64px; height: 64px; border-radius: 32px; background: linear-gradient(135deg, #7C7BF2, #2FA383); flex-shrink: 0; overflow: hidden; }
+  .person .av img { width: 100%; height: 100%; }
+  .person .nm { font-size: 30px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; text-shadow: -1.5px 0 rgba(255,50,120,0.7), 1.5px 0 rgba(40,220,255,0.7); }
+  .person .rl { font-size: 14px; color: var(--soft); margin-top: 4px; }
+  .person .li { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 16px; background: rgba(255,255,255,0.12); font-size: 14px; min-width: 0; }
+  .person .li .logo { width: 24px; height: 24px; border-radius: 6px; background: #0A66C2; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .person .li .url { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+  .person .split { display: flex; gap: 12px; }
+  .person .game { flex: 1; min-width: 0; border-radius: 18px; background: rgba(255,255,255,0.10); padding: 8px 6px 2px; }
+  .person .k { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--soft); margin-left: 6px; }
+  .person .hist { flex: 1; min-width: 0; border-radius: 18px; background: rgba(255,255,255,0.10); padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--soft); }
+  .person .hist b { color: #fff; font-weight: 600; }
+  .talking { position: absolute; left: 50%; top: 16.5%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; padding: 10px 18px 10px 10px; border-radius: 26px; border: 2px solid #5CA8FF; white-space: nowrap; }
+  .talking .chip { padding: 6px 10px; border-radius: 8px; background: #5CA8FF; color: #1E2A3A; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
+  .talking .who { font-size: 24px; font-weight: 700; }
+  .mention { left: 4%; right: 4%; top: 24.5%; padding: 12px 16px; border-radius: 22px; border: 2px solid #5CA8FF; background: rgba(92,168,255,0.22); display: flex; align-items: center; gap: 12px; }
+  .mention .chip { padding: 6px 10px; border-radius: 8px; background: #5CA8FF; color: #1E2A3A; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; flex-shrink: 0; }
+  .mention .say { font-size: 20px; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -110,10 +133,24 @@
     <span class="orb" id="orb"></span>
     <div><span class="label">BAND LIGHT</span><strong id="lightText">Idle</strong></div>
   </div>
+
+  <div class="panel talking" id="talking" hidden><span class="chip" id="pTag"></span><span class="who" id="pTalk"></span></div>
+  <div class="panel mention" id="mention" hidden><span class="chip">SAY</span><span class="say" id="pSay"></span></div>
+  <section class="panel person" id="person" hidden aria-label="Who you're talking to">
+    <div class="row">
+      <div class="av"><img id="pAvatar" alt=""></div>
+      <div style="min-width:0"><div class="nm" id="pName"></div><div class="rl" id="pRole"></div></div>
+    </div>
+    <div class="li"><span class="logo">in</span><span class="url" id="pLink"></span></div>
+    <div class="split">
+      <div class="game"><span class="k">HIS GAME</span><svg id="pChart" viewBox="0 0 260 180" width="100%" aria-hidden="true"></svg></div>
+      <div class="hist"><span class="k" style="margin:0">YOUR HISTORY</span><div id="pHist" style="display:flex;flex-direction:column;gap:6px"></div></div>
+    </div>
+  </section>
 </main>
 
 <aside class="controls" id="controls">
-  <label for="source">Video (H hides this)</label>
+  <label for="source">Video (H hides this · P shows who you're talking to)</label>
   <select id="source">
     <option value="clip:media/pov-6440.mp4">Clip · IMG_6440</option>
     <option value="clip:media/pov-6432.mp4">Clip · IMG_6432</option>
@@ -245,6 +282,62 @@ function fitStage() {
 $('video').addEventListener('loadedmetadata', fitStage);
 $('video').addEventListener('resize', fitStage);
 fitStage();
+
+// Who you're talking to, pre-loaded for the live demo. History and game are made up for the demo.
+const PERSON = {
+  name: 'Mikun',
+  tag: 'TALKING TO',
+  role: 'Founder · plays Tuesdays at the courts',
+  avatar: '/app/avatars/mikun.png',
+  linkedin: 'linkedin.com/in/[MIKUN]',
+  history: [
+    ['Played', '3 games together'],
+    ['Record', 'You lead 2–1'],
+    ['Last time', 'You won 11–8, Nov 7'],
+    ['He liked', 'Your fast forehand drives'],
+  ],
+  game: { axes: ['Serve', 'Forehand', 'Backhand', 'Dink', 'Drops', 'Volley'], vals: [74, 71, 52, 66, 58, 69] },
+  mention: 'Rematch Tuesday? Bring your partner.',   // set to null to hide the SAY prompt
+};
+
+function radar({ axes, vals }) {
+  const cx = 130, cy = 92, R = 58, n = axes.length;
+  const pt = (i, v) => { const a = (-90 + i * 360 / n) * Math.PI / 180, d = R * v / 100; return [cx + d * Math.cos(a), cy + d * Math.sin(a)]; };
+  const poly = (vs) => vs.map((v, i) => pt(i, v).map((x) => x.toFixed(1)).join(',')).join(' ');
+  let svg = '';
+  for (const r of [50, 100]) svg += `<polygon points="${poly(axes.map(() => r))}" fill="none" stroke="rgba(255,255,255,${r === 100 ? 0.4 : 0.2})"/>`;
+  svg += `<polygon points="${poly(vals)}" fill="rgba(255,143,200,0.32)" stroke="#FF8FC8" stroke-width="2"/>`;
+  axes.forEach((name, i) => {
+    const [x, y] = pt(i, 128);
+    const anchor = Math.abs(x - cx) < 6 ? 'middle' : x > cx ? 'start' : 'end';
+    svg += `<text x="${x}" y="${y + 4}" text-anchor="${anchor}" fill="#D2DCD6" font-family="Outfit" font-size="11">${name} ${vals[i]}</text>`;
+  });
+  return svg;
+}
+
+$('pTag').textContent = PERSON.tag;
+$('pTalk').textContent = PERSON.name;
+$('pName').textContent = PERSON.name;
+$('pRole').textContent = PERSON.role;
+$('pAvatar').src = PERSON.avatar;
+$('pLink').textContent = PERSON.linkedin;
+$('pChart').innerHTML = radar(PERSON.game);
+$('pHist').replaceChildren(...PERSON.history.map(([k, v]) => {
+  const d = document.createElement('span');
+  d.innerHTML = `${k} · <b></b>`;
+  d.querySelector('b').textContent = v;
+  return d;
+}));
+$('pSay').textContent = PERSON.mention ? `“${PERSON.mention}”` : '';
+
+function showPerson(on) {
+  $('stage').classList.toggle('profile', on);
+  $('person').hidden = !on;
+  $('talking').hidden = !on;
+  $('mention').hidden = !on || !PERSON.mention;
+}
+document.addEventListener('keydown', (k) => { if (k.key === 'p' || k.key === 'P') showPerson($('person').hidden); });
+if (location.hash === '#person') showPerson(true);
 </script>
 </body>
 </html>
